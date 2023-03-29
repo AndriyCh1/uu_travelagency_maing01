@@ -49,6 +49,15 @@ class TripMongo extends UuObjectDao {
 
     return await super.find(filter, pageInfo, sort);
   }
+
+  async update(uuObject) {
+    if (uuObject.locationId) {
+      uuObject.locationId = new ObjectId(uuObject.locationId);
+    }
+
+    const filter = { id: uuObject.id, awid: uuObject.awid };
+    return await super.findOneAndUpdate(filter, uuObject, "NONE");
+  }
 }
 
 module.exports = TripMongo;

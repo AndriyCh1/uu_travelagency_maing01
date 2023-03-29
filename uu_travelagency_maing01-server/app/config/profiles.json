@@ -38,6 +38,10 @@
         "sysStateList": ["active"],
         "profileList": ["Authorities", "TripExecutives"]
       },
+      "trip/update": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "TripExecutives"]
+      },
       "location/create": {
         "sysStateList": ["active"],
         "profileList": ["Authorities", "LocationExecutives"]

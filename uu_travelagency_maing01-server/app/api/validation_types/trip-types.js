@@ -24,3 +24,12 @@ const tripListDtoInType = shape({
 const tripGetDtoInType = shape({
   id: id().isRequired(),
 });
+
+const tripUpdateDtoInType = shape({
+  id: id().isRequired(),
+  name: string(1, 255),
+  date: date(),
+  price: float(),
+  locationId: id(),
+  text: string(1, 5000),
+});

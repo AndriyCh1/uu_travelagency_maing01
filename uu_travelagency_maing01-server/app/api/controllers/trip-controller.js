@@ -2,6 +2,7 @@
 const CreateAbl = require("../../abl/trip/create-abl");
 const ListAbl = require("../../abl/trip/list-abl");
 const GetAbl = require("../../abl/trip/get-abl");
+const UpdateAbl = require("../../abl/trip/update-abl");
 
 class TripController {
   create(ucEnv) {
@@ -16,7 +17,10 @@ class TripController {
     return ListAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.session, ucEnv.getAuthorizationResult());
   }
 
-  update(ucEnv) {}
+  update(ucEnv) {
+    return UpdateAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.session, ucEnv.getAuthorizationResult());
+  }
+
   delete(ucEnv) {}
 }
 

@@ -61,6 +61,11 @@
         "realization": "api/controllers/LocationController.create",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "location/list": {
+        "realization": "api/controllers/LocationController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

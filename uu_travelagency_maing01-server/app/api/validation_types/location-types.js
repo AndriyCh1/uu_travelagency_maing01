@@ -7,3 +7,11 @@ const locationCreateDtoInType = shape({
   // image: binary().isRequired("name"),
   link: string(1, 500),
 });
+
+const locationListDtoInType = shape({
+  order: oneOf(["asc", "desc"]),
+  pageInfo: shape({
+    pageIndex: integer(),
+    pageSize: integer(),
+  }),
+});

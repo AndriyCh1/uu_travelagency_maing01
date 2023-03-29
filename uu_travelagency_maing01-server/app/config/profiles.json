@@ -1,19 +1,26 @@
 {
   "{asid}": {
     "profileList": ["AsidAuthorities", "AsidExecutives", "AsidLicenseOwner", "Public"],
-    "useCaseMap": {
-    }
+    "useCaseMap": {}
   },
   "*": {
-    "profileList": ["LocationExecutives", "TripExecutives", "Authorities","AwidLicenseOwner", "Public", "Authenticated", "AwidInitiator", "Readers"],
+    "profileList": [
+      "LocationExecutives",
+      "TripExecutives",
+      "Authorities",
+      "AwidLicenseOwner",
+      "Public",
+      "Authenticated",
+      "Readers"
+    ],
     "useCaseMap": {
       "sys/uuAppWorkspace/init": {
         "sysStateList": ["created", "assigned"],
-        "profileList": ["AwidLicenseOwner", "AwidInitiator"]
+        "profileList": ["AwidLicenseOwner"]
       },
       "sys/uuAppWorkspace/load": {
         "sysStateList": ["active"],
-        "profileList": ["Authenticated"]
+        "profileList": ["Authorities", "LocationExecutives", "Readers", "TripExecutives"]
       },
       "sys/uuAppWorkspace/loadBasicData": {
         "sysStateList": ["active"],
@@ -32,11 +39,11 @@
       },
       "trip/list": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities", "TripExecutives"]
+        "profileList": ["Authorities", "LocationExecutives", "TripExecutives", "Readers"]
       },
       "trip/get": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities", "TripExecutives"]
+        "profileList": ["Authorities", "LocationExecutives", "TripExecutives", "Readers"]
       },
       "trip/update": {
         "sysStateList": ["active"],
@@ -44,7 +51,7 @@
       },
       "trip/delete": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities", "TripExecutives"]
+        "profileList": ["Authorities"]
       },
       "location/create": {
         "sysStateList": ["active"],

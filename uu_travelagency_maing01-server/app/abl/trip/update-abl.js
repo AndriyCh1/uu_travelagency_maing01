@@ -107,7 +107,7 @@ class UpdateAbl {
       }
     }
 
-    // hds 8
+    // HDS 8
     toUpdate.awid = awid;
     let updatedTrip;
     try {
@@ -120,7 +120,7 @@ class UpdateAbl {
       throw e;
     }
 
-    // hds 9
+    // HDS 9
     const dtoOut = {
       ...updatedTrip,
       uuAppErrorMap,

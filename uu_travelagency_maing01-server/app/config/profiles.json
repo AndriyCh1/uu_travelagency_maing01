@@ -5,7 +5,7 @@
     }
   },
   "*": {
-    "profileList": ["Authorities", "Executives", "AwidLicenseOwner", "Public", "Authenticated", "AwidInitiator"],
+    "profileList": ["LocationExecutives", "TripExecutives", "Authorities","AwidLicenseOwner", "Public", "Authenticated", "AwidInitiator", "Readers"],
     "useCaseMap": {
       "sys/uuAppWorkspace/init": {
         "sysStateList": ["created", "assigned"],
@@ -25,6 +25,14 @@
       "sys/uuAppWorkspace/initUve": {
         "sysStateList": ["created"],
         "profileList": ["Public", "AwidLicenseOwner"]
+      },
+      "trip/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "TripExecutives"]
+      },
+      "location/create": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "LocationExecutives"]
       }
     }
   }

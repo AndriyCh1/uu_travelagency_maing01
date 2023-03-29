@@ -1,9 +1,8 @@
-"use strict";
 const { UseCaseError } = require("uu_appg01_server").AppServer;
 
-class TravelagencyMainUseCaseError extends UseCaseError {
+class UuTravelAgencyError extends UseCaseError {
   static get ERROR_PREFIX() {
-    return "uu-travelagency-main/";
+    return "uu-travel-agency/";
   }
 
   constructor(dtoOut, paramMap = {}, cause = null) {
@@ -11,8 +10,9 @@ class TravelagencyMainUseCaseError extends UseCaseError {
       cause = paramMap;
       paramMap = {};
     }
+
     super({ dtoOut, paramMap, status: 400 }, cause);
   }
 }
 
-module.exports = TravelagencyMainUseCaseError;
+module.exports = UuTravelAgencyError;

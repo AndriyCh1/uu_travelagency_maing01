@@ -4,8 +4,16 @@
       "type": "uuAppObjectStore",
       "realization": "MongoDB",
       "schemaMap": {
-        "travelagencyMain": {
-          "realization": "dao/TravelagencyMainMongo"
+        "travelAgency": {
+          "realization": "dao/TravelAgencyMongo"
+        },
+        "trip": {
+          "realization": "dao/TripMongo",
+          "maxNoi": 2000
+        },
+        "location": {
+          "realization": "dao/LocationMongo",
+          "maxNoi": 500
         }
       }
     }

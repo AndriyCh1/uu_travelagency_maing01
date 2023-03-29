@@ -33,3 +33,7 @@ const tripUpdateDtoInType = shape({
   locationId: id(),
   text: string(1, 5000),
 });
+
+const tripDeleteDtoInType = shape({
+  id: id().isRequired(),
+});

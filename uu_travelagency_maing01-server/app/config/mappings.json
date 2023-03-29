@@ -52,6 +52,11 @@
           "id": "$.id"
         }
       },
+      "trip/delete": {
+        "realization": "api/controllers/TripController.delete",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
       "location/create": {
         "realization": "api/controllers/LocationController.create",
         "httpMethod": "POST",

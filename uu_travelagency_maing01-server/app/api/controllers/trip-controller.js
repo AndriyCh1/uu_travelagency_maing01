@@ -1,5 +1,6 @@
 "use strict";
 const CreateAbl = require("../../abl/trip/create-abl");
+const ListAbl = require("../../abl/trip/list-abl");
 
 class TripController {
   create(ucEnv) {
@@ -7,7 +8,11 @@ class TripController {
   }
 
   get(ucEnv) {}
-  list(ucEnv) {}
+
+  list(ucEnv) {
+    return ListAbl.list(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.session, ucEnv.getAuthorizationResult());
+  }
+
   update(ucEnv) {}
   delete(ucEnv) {}
 }

@@ -17,7 +17,7 @@ class CreateAbl {
   async create(awid, dtoIn, session, authorizationResult) {
     let uuAppErrorMap = {};
 
-    // HDS 1
+    // HDS 1, 1.1
     const validationResult = this.validator.validate("tripCreateDtoInType", dtoIn);
 
     // 1.2, 1.2.1, 1.3, 1.3.1

@@ -6,3 +6,17 @@ const tripCreateDtoInType = shape({
   locationId: id().isRequired(),
   text: string(1, 5000).isRequired(),
 });
+
+const tripListDtoInType = shape({
+  sortBy: oneOf(["date", "price"]),
+  order: oneOf(["asc", "desc"]),
+  filterMap: shape({
+    locationId: id(),
+    dateFrom: date(),
+    dateTo: date(),
+  }),
+  pageInfo: shape({
+    pageIndex: integer(),
+    pageSize: integer(),
+  }),
+});

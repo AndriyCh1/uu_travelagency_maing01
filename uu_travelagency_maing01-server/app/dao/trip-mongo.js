@@ -12,6 +12,39 @@ class TripMongo extends UuObjectDao {
   async create(uuObject) {
     return await super.insertOne(uuObject);
   }
+
+  async list(awid, sortBy, order, pageInfo) {
+    const filter = { awid };
+
+    const sort = {
+      [sortBy]: order === "asc" ? 1 : -1,
+    };
+
+    return await super.find(filter, pageInfo, sort);
+  }
+
+  async listByLocationIdAndDate(awid, sortBy, order, pageInfo, filterMap) {
+    // TODO: fix date filter in listByLocationIdAndDate
+    // date: {
+    // $gte: ISODate(filterMap.dateFrom),
+    //   $lte: new Date(filterMap.dateTo),
+    // },
+
+    let filter = {
+      awid,
+      date: {
+        $gte: "2023-04-13",
+        $lte: "2023-04-20",
+      },
+      locationId: filterMap.locationId,
+    };
+
+    const sort = {
+      [sortBy]: order === "asc" ? 1 : -1,
+    };
+
+    return await super.find(filter, pageInfo, sort);
+  }
 }
 
 module.exports = TripMongo;

@@ -31,6 +31,11 @@
         "httpMethod": "POST",
         "type": "CMD"
       },
+      "trip/list": {
+        "realization": "api/controllers/TripController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "location/create": {
         "realization": "api/controllers/LocationController.create",
         "httpMethod": "POST",

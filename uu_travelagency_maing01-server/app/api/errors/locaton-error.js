@@ -24,6 +24,13 @@ const Create = {
       this.message = "UuObject travelAgency is not in correct state.";
     }
   },
+  LocationDaoCreateFailed: class extends UuTravelAgencyError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}locationDaoCreateFailed`;
+      this.message = "Create location by location DAO create failed.";
+    }
+  },
 };
 
 module.exports = {

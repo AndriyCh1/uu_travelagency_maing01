@@ -18,9 +18,19 @@ const Constants = {
       UNDER_CONSTRUCTION: "underConstruction",
       CLOSED: "closed",
     },
-
-    get NonFinalStates() {
-      return new Set([this.States.ACTIVE, this.States.UNDER_CONSTRUCTION]);
+  },
+  Trip: {
+    States: {
+      INIT: "init",
+      ACTIVE: "active",
+      CLOSED: "closed",
+    },
+  },
+  Location: {
+    States: {
+      ACTIVE: "active",
+      PROBLEM: "problem",
+      CLOSED: "closed",
     },
   },
 };

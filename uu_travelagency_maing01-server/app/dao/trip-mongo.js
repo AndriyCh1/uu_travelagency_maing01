@@ -8,6 +8,10 @@ class TripMongo extends UuObjectDao {
     await super.createIndex({ awid: 1, date: 1 });
     await super.createIndex({ awid: 1, locationId: 1, date: 1 });
   }
+
+  async create(uuObject) {
+    return await super.insertOne(uuObject);
+  }
 }
 
 module.exports = TripMongo;

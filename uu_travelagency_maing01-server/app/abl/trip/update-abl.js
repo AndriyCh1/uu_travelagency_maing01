@@ -67,7 +67,11 @@ class UpdateAbl {
     }
 
     // HDS 5
-    let toUpdate = { id: dtoIn.id, name: dtoIn.name };
+
+    let toUpdate = { id: dtoIn.id };
+    if (dtoIn.name) {
+      toUpdate.name = dtoIn.name;
+    }
 
     const isInCorrectState = trip.state === Trip.States.ACTIVE;
     const hasRequiredFields = dtoIn.locationId || dtoIn.price || dtoIn.date;

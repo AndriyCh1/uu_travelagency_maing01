@@ -36,6 +36,14 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
+      "trip/get": {
+        "realization": "api/controllers/TripController.get",
+        "httpMethod": "GET",
+        "type": "CMD",
+        "dtoInAuditMap": {
+          "id": "$.id"
+        }
+      },
       "location/create": {
         "realization": "api/controllers/LocationController.create",
         "httpMethod": "POST",

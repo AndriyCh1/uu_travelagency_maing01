@@ -20,3 +20,7 @@ const tripListDtoInType = shape({
     pageSize: integer(),
   }),
 });
+
+const tripGetDtoInType = shape({
+  id: id().isRequired(),
+});

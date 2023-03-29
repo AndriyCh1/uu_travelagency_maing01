@@ -13,6 +13,10 @@ class TripMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
+  async get(awid, id) {
+    return await super.findOne({ id, awid });
+  }
+
   async list(awid, sortBy, order, pageInfo) {
     const filter = { awid };
 

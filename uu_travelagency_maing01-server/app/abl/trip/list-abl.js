@@ -67,16 +67,13 @@ class ListAbl {
     let list;
     const { sortBy, order, pageInfo } = dtoIn;
 
-    if (!(dtoIn?.filterMap?.locationId && dtoIn?.filterMap?.dateFrom && dtoIn?.filterMap?.dateTo)) {
+    if (!(dtoIn?.filterMap?.locationId || dtoIn?.filterMap?.dateFrom || dtoIn?.filterMap?.dateTo)) {
       list = await this.dao.list(awid, sortBy, order, pageInfo);
     } else {
       list = await this.dao.listByLocationIdAndDate(awid, sortBy, order, pageInfo, dtoIn.filterMap);
     }
 
     // HDS 4
-    // TODO: find out if this HDS is necessary
-
-    // HDS 5
     const dtoOut = {
       ...list,
       uuAppErrorMap,

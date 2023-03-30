@@ -28,20 +28,24 @@ class TripMongo extends UuObjectDao {
   }
 
   async listByLocationIdAndDate(awid, sortBy, order, pageInfo, filterMap) {
-    // TODO: fix date filter in listByLocationIdAndDate
-    // date: {
-    // $gte: ISODate(filterMap.dateFrom),
-    //   $lte: new Date(filterMap.dateTo),
-    // },
+    let filter = { awid };
+    let dateFilter = {};
 
-    let filter = {
-      awid,
-      date: {
-        $gte: "2023-04-13",
-        $lte: "2023-04-20",
-      },
-      locationId: filterMap.locationId,
-    };
+    if (filterMap?.dateFrom) {
+      dateFilter.$gte = filterMap.dateFrom;
+    }
+
+    if (filterMap?.dateTo) {
+      dateFilter.$lte = filterMap.dateTo;
+    }
+
+    if (filterMap?.locationId) {
+      filter.locationId = filterMap.locationId;
+    }
+
+    if (Object.keys(dateFilter).length) {
+      filter.date = dateFilter;
+    }
 
     const sort = {
       [sortBy]: order === "asc" ? 1 : -1,

@@ -49,8 +49,6 @@ export const Tile = createVisualComponent({
     const trip = tripDataObject.data;
     const location = locationDataObject.data;
 
-    console.log(location, "location");
-    console.log(props, "----- props");
     return (
       <Uu5Elements.Tile
         {...elementProps}

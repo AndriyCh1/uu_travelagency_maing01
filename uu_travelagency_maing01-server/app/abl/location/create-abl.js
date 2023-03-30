@@ -2,6 +2,8 @@
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory, ObjectStoreError } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { UuBinaryAbl } = require("uu_appg01_binarystore-cmd");
+const LocationComponent = require("../../component/location");
 const Warnings = require("../../api/warnings/location-warnings");
 const Errors = require("../../api/errors/locaton-error");
 const { Profiles, Schemas, TravelAgency, Location } = require("../constants");
@@ -47,6 +49,20 @@ class CreateAbl {
       Errors.Create,
       uuAppErrorMap
     );
+
+    if (dtoIn.image) {
+      const image = await LocationComponent.checkAndGetImageAsStream(dtoIn.image, Errors.Create, uuAppErrorMap);
+      try {
+        const binary = await UuBinaryAbl.createBinary(awid, {
+          data: image,
+          filename: dtoIn.image.filename,
+          contentType: dtoIn.image.contentType,
+        });
+        uuObject.image = binary.code;
+      } catch (e) {
+        throw new Errors.Create.UuBinaryCreateFailed({ uuAppErrorMap }, e);
+      }
+    }
 
     uuObject.awid = awid;
     let location;

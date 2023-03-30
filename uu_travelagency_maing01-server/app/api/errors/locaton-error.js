@@ -31,6 +31,20 @@ const Create = {
       this.message = "Create location by location DAO create failed.";
     }
   },
+  InvalidImage: class extends UuTravelAgencyError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}invalidImage`;
+      this.message = "Image is invalid or it is not an image.";
+    }
+  },
+  UuBinaryCreateFailed: class extends UuTravelAgencyError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}uuBinaryCreateFailed`;
+      this.message = "Create uuBinary failed.";
+    }
+  },
 };
 
 const List = {

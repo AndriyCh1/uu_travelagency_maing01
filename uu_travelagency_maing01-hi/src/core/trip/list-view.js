@@ -73,9 +73,7 @@ const ListView = createVisualComponent({
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props);
     const actionList = getActions(props);
-    const mappedTripByLocation = mapTripListDataByLocation(tripDataList, locationDataList);
 
-    console.log(mappedTripByLocation, "----- mappedTripByLocation");
     return (
       <ControllerProvider
         data={tripDataList.data}
@@ -183,28 +181,6 @@ function getActions(props) {
 }
 
 //@@viewOn:helpers
-function mapTripListDataByLocation(tripDataList, locationDataList) {
-  let trip;
-  if (tripDataList.state === "ready" && locationDataList.state === "ready") {
-    trip = tripDataList.data.map((tripItem) => {
-      const location = getLocationById(locationDataList.data, tripItem.data.locationId);
-
-      if (location) {
-        tripItem.data.locationData = location.data;
-      }
-
-      return tripItem;
-    });
-  }
-
-  return trip;
-}
-
-function getLocationById(locationDataList, id) {
-  const location = locationDataList.find((location) => location.data.id === id);
-  return location;
-}
-//@@viewOff:helpers
 //@@viewOff:helpers
 
 //@@viewOn:exports

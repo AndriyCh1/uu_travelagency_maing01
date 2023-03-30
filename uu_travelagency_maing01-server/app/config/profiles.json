@@ -33,6 +33,18 @@
         "sysStateList": ["created"],
         "profileList": ["Public", "AwidLicenseOwner"]
       },
+      "uu-app-binarystore/createBinary": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "LocationExecutives", "TripExecutives"]
+      },
+      "uu-app-binarystore/getBinary": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "LocationExecutives", "TripExecutives"]
+      },
+      "uu-app-binarystore/getBinaryData": {
+        "sysStateList": ["active"],
+        "profileList": ["Authorities", "LocationExecutives", "TripExecutives"]
+      },
       "trip/create": {
         "sysStateList": ["active"],
         "profileList": ["Authorities", "TripExecutives"]

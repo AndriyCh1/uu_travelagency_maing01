@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createComponent, useDataList, useRef } from "uu5g05";
+import { createComponent, useDataList, useEffect, useRef } from "uu5g05";
 import Config from "./config/config";
 import Calls from "calls";
 //@@viewOff:imports
@@ -24,15 +24,19 @@ export const ListProvider = createComponent({
         load: handleLoad,
         loadNext: handleLoadNext,
       },
+      itemHandlerMap: {
+        getImage: handleGetImage,
+      },
     });
 
     const criteriaRef = useRef({});
+    const imageUrlListRef = useRef([]);
 
     function handleLoad(criteria) {
       const dtoIn = { ...criteria };
       dtoIn.order = criteria.order || "asc";
-
       criteriaRef.current = dtoIn;
+
       return Calls.Location.list(dtoIn);
     }
 
@@ -40,6 +44,19 @@ export const ListProvider = createComponent({
       const dtoIn = { ...criteriaRef.current, pageInfo };
       return Calls.Location.list(dtoIn);
     }
+
+    async function handleGetImage(location) {
+      const dtoIn = { code: location.image };
+      const image = await Calls.Location.getImage(dtoIn);
+      const imageUrl = URL.createObjectURL(image);
+      imageUrlListRef.current.push(imageUrl);
+
+      return { ...location, image, imageUrl };
+    }
+
+    useEffect(() => {
+      return () => imageUrlListRef.current.forEach((url) => URL.revokeObjectURL(url));
+    }, []);
     //@@viewOff:private
 
     //@@viewOn:render

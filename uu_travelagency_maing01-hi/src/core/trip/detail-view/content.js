@@ -1,15 +1,25 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
 import { createVisualComponent, Utils, PropTypes } from "uu5g05";
-import { Text, Box } from "uu5g05-elements";
+import { Text, Line, Icon, Link } from "uu5g05-elements";
 import Config from "./config/config";
 //@@viewOff:imports
 
 //@@viewOn:css
 const Css = {
+  image: () =>
+    Config.Css.css({
+      display: "block",
+      maxWidth: "35%",
+      margin: "auto",
+    }),
+
   text: () =>
     Config.Css.css({
       display: "block",
+      marginTop: "10px",
+      marginBottom: "10px",
+      fontSize: "18px",
     }),
 };
 //@@viewOff:css
@@ -43,13 +53,31 @@ const Content = createVisualComponent({
 
     return (
       <div {...attrs}>
-        <Box>
-          <Text className={Css.text()}>{trip.text}</Text>
-          <Text className={Css.text()}>Name: {trip.name}</Text>
-          <Text className={Css.text()}>Price: {trip.price}</Text>
-          <Text className={Css.text()}>Free places: {trip.freePlaces}</Text>
-          <Text className={Css.text()}>Location: {location.data.name}</Text>
-        </Box>
+        {location.imageUrl && <img src={location.imageUrl} alt={location.name} className={Css.image()} />}
+        <Text className={Css.text()}>
+          <Icon icon="uugdsstencil-communication-comment-text-solid" />
+          Update{trip.text}
+        </Text>
+        <Line significance="subdued" />
+        <Text className={Css.text()}>
+          <Icon icon="uugdsstencil-commerce-tag" />
+          Price: {trip.price} €
+        </Text>
+        <Line significance="subdued" />
+        <Text className={Css.text()}>
+          <Icon icon="uugds-account-multi" />
+          Free places: {trip.freePlaces}{" "}
+        </Text>
+        <Line significance="subdued" />
+        <Text className={Css.text()}>
+          <Icon icon="uugdsstencil-navigation-navigation-gps" />
+          Location: {location.data.name}
+        </Text>
+        <Line significance="subdued" />
+        <Text className={Css.text()}>
+          <Icon icon="uugds-paperclip" />
+          <Link href={location.data.link}>{location.data.link}</Link>
+        </Text>
       </div>
     );
     //@@viewOff:render

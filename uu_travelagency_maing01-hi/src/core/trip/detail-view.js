@@ -31,7 +31,7 @@ const DetailView = createVisualComponent({
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props);
     return (
-      <Uu5Elements.Block {...attrs} header={tripDataObject?.data?.name} headerType="heading">
+      <Uu5Elements.Block {...attrs} header={tripDataObject?.data?.name} headerType="heading" card="content">
         <DataObjectStateResolver dataObject={tripDataObject}>
           <DataListStateResolver dataList={locationDataList}>
             <Content tripDataObject={tripDataObject} locationDataList={locationDataList} />

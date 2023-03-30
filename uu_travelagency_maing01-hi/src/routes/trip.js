@@ -1,9 +1,9 @@
 //@@viewOn:imports
 import { createVisualComponent, useRoute } from "uu5g05";
+import { RouteController } from "uu_plus4u5g02-app";
+import RouteContainer from "../core/route-container";
+import TripDetail from "../core/trip/detail";
 import Config from "./config/config";
-import TripProvider from "../core/trip/provider";
-import LocationListProvider from "../core/location/list-provider";
-import DetailView from "../core/trip/detail-view";
 //@@viewOff:imports
 
 const Trip = createVisualComponent({
@@ -26,13 +26,11 @@ const Trip = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <TripProvider tripId={route.params.id}>
-        {(tripDataObject) => (
-          <LocationListProvider>
-            {(locationDataList) => <DetailView tripDataObject={tripDataObject} locationDataList={locationDataList} />}
-          </LocationListProvider>
-        )}
-      </TripProvider>
+      <RouteController>
+        <RouteContainer>
+          <TripDetail tripId={route.params.id} />
+        </RouteContainer>
+      </RouteController>
     );
     //@@viewOff:render
   },

@@ -31,6 +31,10 @@ const Calls = {
       const commandUri = Calls.getCommandUri("location/list");
       return Calls.call("get", commandUri, dtoIn);
     },
+    getImage(dtoIn) {
+      const commandUri = Calls.getCommandUri("uu-app-binarystore/getBinaryData");
+      return Calls.call("get", commandUri, dtoIn);
+    },
   },
 
   loadIdentityProfiles() {

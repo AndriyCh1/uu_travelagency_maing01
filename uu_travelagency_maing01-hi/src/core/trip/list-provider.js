@@ -49,7 +49,7 @@ export const ListProvider = createComponent({
     }
 
     function handleLoadNext(pageInfo) {
-      const criteria = getLoadDtoIn(filterList.current, sorterList.current, pageInfo);
+      const criteria = prepareLoadDtoIn(filterList.current, sorterList.current, pageInfo);
 
       const dtoIn = { ...criteria, pageInfo };
       return Calls.Trip.list(dtoIn);

@@ -68,6 +68,9 @@ const ListView = createVisualComponent({
     const handleDetail = (trip) => {
       setRoute("tripDetail", { id: trip.id });
     };
+
+    const handleUpdate = () => {};
+    const handleDelete = () => {};
     //@@viewOff:private
 
     //@@viewOn:render
@@ -98,6 +101,8 @@ const ListView = createVisualComponent({
                 locationDataList={props.locationDataList}
                 onLoadNext={handleLoadNext}
                 onDetail={handleDetail}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
               />
             </DataListStateResolver>
           </DataListStateResolver>

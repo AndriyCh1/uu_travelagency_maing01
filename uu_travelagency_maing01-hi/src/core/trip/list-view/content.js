@@ -24,6 +24,8 @@ export const Content = createVisualComponent({
     locationDataList: PropTypes.object.isRequired,
     onLoadNext: PropTypes.func,
     onDetail: PropTypes.func,
+    onUpdate: PropTypes.func,
+    onDelete: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -48,12 +50,15 @@ export const Content = createVisualComponent({
       <div {...attrs}>
         <FilterBar disabled={tripDataList.state !== "ready"} />
         <SorterBar disabled={tripDataList.state !== "ready"} />
-        <Grid onLoad={handleLoadNext} tileMinWidth={300} tileMaxWidth={500} className={Css.grid()}>
+        <Grid onLoad={handleLoadNext} tileMinWidth={300} tileMaxWidth={500} tileMaxHeigh={400} className={Css.grid()}>
           {(tripDataObject) => (
             <Tile
               {...tileProps}
               tripDataObject={tripDataObject.data}
               locationDataObject={getLocationObjectById(locationDataList, tripDataObject.data.data.locationId)}
+              onDetail={props.onDetail}
+              onUpdate={props.onUpdate}
+              onDelete={props.onDelete}
             />
           )}
         </Grid>

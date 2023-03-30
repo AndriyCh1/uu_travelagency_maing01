@@ -13,10 +13,12 @@ const About = Utils.Component.lazy(() => import("../routes/about.js"));
 const InitAppWorkspace = Utils.Component.lazy(() => import("../routes/init-app-workspace.js"));
 const ControlPanel = Utils.Component.lazy(() => import("../routes/control-panel.js"));
 const Trips = Utils.Component.lazy(() => import("../routes/trips.js"));
+const Trip = Utils.Component.lazy(() => import("../routes/trip.js"));
 
 const ROUTE_MAP = {
   "": { redirect: "trips" },
   trips: (props) => <Trips {...props} />,
+  tripDetail: (props) => <Trip {...props} />,
   about: (props) => <About {...props} />,
   "sys/uuAppWorkspace/initUve": (props) => <InitAppWorkspace {...props} />,
   controlPanel: (props) => <ControlPanel {...props} />,

@@ -1,7 +1,7 @@
 //@@viewOn:imports
 import "uu5g04-bricks";
 import { createVisualComponent, Utils } from "uu5g05";
-import Uu5Elements, { Text } from "uu5g05-elements";
+import Uu5Elements, { Text, Button } from "uu5g05-elements";
 import Config from "./config/config";
 //@@viewOff:imports
 
@@ -36,7 +36,11 @@ export const Tile = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { data: tripDataObject } = props;
+    const { data: tripDataObject, onDetail } = props;
+
+    const handleDetail = () => {
+      onDetail(tripDataObject.data);
+    };
     //@@viewOff:private
 
     //@@viewOn:render
@@ -66,6 +70,7 @@ export const Tile = createVisualComponent({
             <Text className={Css.text(tile)}>Price: {trip.price}</Text>
             <Text className={Css.text(tile)}>Date: {trip.date}</Text>
             <Text className={Css.text(tile)}>Free places: {trip.freePlaces}</Text>
+            <Button onClick={handleDetail}>lsi.more</Button>
           </div>
         )}
       </Uu5Elements.Tile>

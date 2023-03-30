@@ -20,6 +20,10 @@ const Calls = {
       const commandUri = Calls.getCommandUri("trip/list");
       return Calls.call("get", commandUri, dtoIn);
     },
+    get(dtoIn) {
+      const commandUri = Calls.getCommandUri("trip/get");
+      return Calls.call("get", commandUri, dtoIn);
+    },
   },
 
   Location: {

@@ -28,6 +28,7 @@ export const Content = createVisualComponent({
     tripDataList: PropTypes.object.isRequired,
     locationDataList: PropTypes.object.isRequired,
     onLoadNext: PropTypes.func,
+    onDetail: PropTypes.func,
   },
   //@@viewOff:propTypes
 

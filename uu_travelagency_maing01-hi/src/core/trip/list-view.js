@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createVisualComponent, useCallback, Utils, PropTypes, Lsi, useLsi } from "uu5g05";
+import { createVisualComponent, useCallback, Utils, PropTypes, Lsi, useLsi, useRoute } from "uu5g05";
 import Uu5Elements, { useAlertBus } from "uu5g05-elements";
 import { ControllerProvider } from "uu5tilesg02";
 import { FilterButton, SorterButton } from "uu5tilesg02-controls";
@@ -29,6 +29,7 @@ const ListView = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
+    const [, setRoute] = useRoute();
     const lsi = useLsi(importLsi, [ListView.uu5Tag]);
     const { addAlert } = useAlertBus();
     const { tripDataList, locationDataList, filterList, sorterList } = props;
@@ -64,6 +65,9 @@ const ListView = createVisualComponent({
       [tripDataList, showError]
     );
 
+    const handleDetail = (trip) => {
+      setRoute("tripDetail", { id: trip.id });
+    };
     //@@viewOff:private
 
     //@@viewOn:render
@@ -94,6 +98,7 @@ const ListView = createVisualComponent({
                   tripDataList={props.tripDataList}
                   locationDataList={props.locationDataList}
                   onLoadNext={handleLoadNext}
+                  onDetail={handleDetail}
                 />
               </DataListStateResolver>
             </DataListStateResolver>

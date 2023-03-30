@@ -74,12 +74,7 @@ let ControlPanel = createVisualComponent({
         </Uu5Elements.HighlightedBox>
       );
     }
-    return (
-      <>
-        <RouteBar />
-        {child}
-      </>
-    );
+    return <>{child}</>;
     //@@viewOff:render
   },
 });

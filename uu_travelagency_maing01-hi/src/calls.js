@@ -6,24 +6,32 @@ import Plus4U5 from "uu_plus4u5g02";
 //   "uu5Environment": {
 //     "callsBaseUri": "http://localhost:8080/vnd-app/awid"
 //   }
-const CALLS_BASE_URI =
-  (process.env.NODE_ENV !== "production" ? Environment.get("callsBaseUri") : null) || Environment.appBaseUri;
+const CALLS_BASE_URI = (
+  (process.env.NODE_ENV !== "production" ? Environment.get("callsBaseUri") : null) || Environment.appBaseUri
+).replace(/\/*$/, "/");
 
 const Calls = {
   async call(method, url, dtoIn, clientOptions) {
     const response = await Plus4U5.Utils.AppClient[method](url, dtoIn, clientOptions);
     return response.data;
   },
+  Trip: {
+    list(dtoIn) {
+      const commandUri = Calls.getCommandUri("trip/list");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+  },
 
-  // // example for mock calls
-  // loadDemoContent(dtoIn) {
-  //   const commandUri = Calls.getCommandUri("loadDemoContent");
-  //   return Calls.call("get", commandUri, dtoIn);
-  // },
+  Location: {
+    list(dtoIn) {
+      const commandUri = Calls.getCommandUri("location/list");
+      return Calls.call("get", commandUri, dtoIn);
+    },
+  },
 
   loadIdentityProfiles() {
     const commandUri = Calls.getCommandUri("sys/uuAppWorkspace/initUve");
-    return Calls.call("get", commandUri);
+    return Calls.call("get", commandUri, {});
   },
 
   initWorkspace(dtoInData) {
@@ -33,7 +41,7 @@ const Calls = {
 
   getWorkspace() {
     const commandUri = Calls.getCommandUri("sys/uuAppWorkspace/get");
-    return Calls.call("get", commandUri);
+    return Calls.call("get", commandUri, {});
   },
 
   async initAndGetWorkspace(dtoInData) {
@@ -41,8 +49,8 @@ const Calls = {
     return await Calls.getWorkspace();
   },
 
-  getCommandUri(useCase, baseUri = CALLS_BASE_URI) {
-    return (!baseUri.endsWith("/") ? baseUri + "/" : baseUri) + (useCase.startsWith("/") ? useCase.slice(1) : useCase);
+  getCommandUri(useCase) {
+    return CALLS_BASE_URI + useCase.replace(/^\/+/, "");
   },
 };
 

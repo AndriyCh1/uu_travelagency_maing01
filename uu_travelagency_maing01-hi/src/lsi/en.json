@@ -30,7 +30,15 @@
     "initialize": "Initialize"
   },
   "Menu": {
-    "home": "Welcome",
+    "trips": "Trips",
     "about": "About Application"
+  },
+  "UuTravelagency.Core.Trip.ListView": {
+    "header": "Trips",
+    "date": "Date",
+    "price": "Price",
+    "location": "Location",
+    "dateFrom": "From",
+    "dateTo": "To"
   }
 }

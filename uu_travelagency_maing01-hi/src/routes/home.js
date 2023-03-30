@@ -51,7 +51,6 @@ let Home = createVisualComponent({
     const attrs = Utils.VisualComponent.getAttrs(props);
     return (
       <div {...attrs}>
-        <RouteBar />
         <WelcomeRow left={<Plus4U5Elements.PersonPhoto size="xl" borderRadius="none" />}>
           <Uu5Elements.Text category="story" segment="heading" type="h2">
             <Lsi import={importLsi} path={["Home", "welcome"]} />

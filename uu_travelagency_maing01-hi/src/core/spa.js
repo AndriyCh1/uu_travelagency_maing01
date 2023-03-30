@@ -5,17 +5,18 @@ import Plus4U5 from "uu_plus4u5g02";
 import Plus4U5App from "uu_plus4u5g02-app";
 
 import Config from "./config/config.js";
-import Home from "../routes/home.js";
+import RouteBar from "./route-bar";
 //@@viewOff:imports
 
 //@@viewOn:constants
 const About = Utils.Component.lazy(() => import("../routes/about.js"));
 const InitAppWorkspace = Utils.Component.lazy(() => import("../routes/init-app-workspace.js"));
 const ControlPanel = Utils.Component.lazy(() => import("../routes/control-panel.js"));
+const Trips = Utils.Component.lazy(() => import("../routes/trips.js"));
 
 const ROUTE_MAP = {
-  "": { redirect: "home" },
-  home: (props) => <Home {...props} />,
+  "": { redirect: "trips" },
+  trips: (props) => <Trips {...props} />,
   about: (props) => <About {...props} />,
   "sys/uuAppWorkspace/initUve": (props) => <InitAppWorkspace {...props} />,
   controlPanel: (props) => <ControlPanel {...props} />,
@@ -55,9 +56,12 @@ const Spa = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <Plus4U5.SpaProvider initialLanguageList={["en", "cs"]}>
+      <Plus4U5.SpaProvider initialLanguageList={["en", "cs", "uk"]}>
         <Uu5Elements.ModalBus>
-          <Plus4U5App.Spa routeMap={ROUTE_MAP} />
+          <Plus4U5App.Spa>
+            <RouteBar />
+            <Plus4U5App.Router routeMap={ROUTE_MAP} />
+          </Plus4U5App.Spa>
         </Uu5Elements.ModalBus>
       </Plus4U5.SpaProvider>
     );

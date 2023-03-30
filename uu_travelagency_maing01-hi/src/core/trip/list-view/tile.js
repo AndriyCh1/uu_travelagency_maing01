@@ -36,7 +36,7 @@ export const Tile = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { data: tripDataObject, onDetail } = props;
+    const { tripDataObject, locationDataObject, onDetail } = props;
 
     const handleDetail = () => {
       onDetail(tripDataObject.data);
@@ -47,14 +47,17 @@ export const Tile = createVisualComponent({
     const { elementProps } = Utils.VisualComponent.splitProps(props);
 
     const trip = tripDataObject.data;
+    const location = locationDataObject.data;
 
+    console.log(location, "location");
+    console.log(props, "----- props");
     return (
       <Uu5Elements.Tile
         {...elementProps}
         header={<Header trip={trip} />}
         footerSignificance="distinct"
         significance="subdued"
-        borderRadius="elementary"
+        borderRadius="expressive"
       >
         {(tile) => (
           <div className={Css.content()}>
@@ -65,11 +68,12 @@ export const Tile = createVisualComponent({
               colorScheme="building"
               className={Css.text(tile)}
             >
-              Location: {trip.locationId}
+              Location: {location.name}
             </Text>
             <Text className={Css.text(tile)}>Price: {trip.price}</Text>
             <Text className={Css.text(tile)}>Date: {trip.date}</Text>
             <Text className={Css.text(tile)}>Free places: {trip.freePlaces}</Text>
+            <Text className={Css.text(tile)}>Image -----</Text>
             <Button onClick={handleDetail}>lsi.more</Button>
           </div>
         )}
@@ -81,7 +85,7 @@ export const Tile = createVisualComponent({
 
 function Header({ trip }) {
   return (
-    <Text category="interface" segment="title" type="micro" colorScheme="building">
+    <Text category="interface" segment="title" type="minor" colorScheme="building">
       {trip.name}
     </Text>
   );

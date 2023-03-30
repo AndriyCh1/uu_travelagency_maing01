@@ -6,16 +6,22 @@ import Config from "./config/config";
 const Css = {
   routeContainer: (screenSize) => {
     let padding;
+    let maxWidth;
     switch (screenSize) {
       case "xs":
       case "s":
-        padding = "8px 8px";
+        maxWidth = "100%";
+        padding = "18px 18px";
         break;
       case "m":
       case "l":
+        maxWidth = 640;
+        padding = "22px 22px";
+        break;
       case "xl":
       default:
-        padding = "16px 16px";
+        padding = "26px 26px";
+        maxWidth = 1280;
     }
     return Config.Css.css`padding: ${padding};`;
   },

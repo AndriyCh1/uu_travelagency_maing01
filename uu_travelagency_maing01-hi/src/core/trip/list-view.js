@@ -73,38 +73,38 @@ const ListView = createVisualComponent({
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props);
     const actionList = getActions(props);
+    const mappedTripByLocation = mapTripListDataByLocation(tripDataList, locationDataList);
 
+    console.log(mappedTripByLocation, "----- mappedTripByLocation");
     return (
-      <>
-        <ControllerProvider
-          data={tripDataList.data}
-          filterDefinitionList={getFilters(locationDataList, lsi)}
-          sorterDefinitionList={getSorters(lsi)}
-          filterList={filterList}
-          sorterList={sorterList}
-          onFilterChange={handleLoad}
-          onSorterChange={handleLoad}
+      <ControllerProvider
+        data={tripDataList.data}
+        filterDefinitionList={getFilters(locationDataList, lsi)}
+        sorterDefinitionList={getSorters(lsi)}
+        filterList={filterList}
+        sorterList={sorterList}
+        onFilterChange={handleLoad}
+        onSorterChange={handleLoad}
+      >
+        <Uu5Elements.Block
+          {...attrs}
+          actionList={actionList}
+          header={<Lsi import={importLsi} path={[ListView.uu5Tag, "header"]} />}
+          headerType="heading"
+          card="none"
         >
-          <Uu5Elements.Block
-            {...attrs}
-            actionList={actionList}
-            header={<Lsi import={importLsi} path={[ListView.uu5Tag, "header"]} />}
-            headerType="heading"
-            card="none"
-          >
-            <DataListStateResolver dataList={tripDataList}>
-              <DataListStateResolver dataList={locationDataList}>
-                <Content
-                  tripDataList={props.tripDataList}
-                  locationDataList={props.locationDataList}
-                  onLoadNext={handleLoadNext}
-                  onDetail={handleDetail}
-                />
-              </DataListStateResolver>
+          <DataListStateResolver dataList={tripDataList}>
+            <DataListStateResolver dataList={locationDataList}>
+              <Content
+                tripDataList={props.tripDataList}
+                locationDataList={props.locationDataList}
+                onLoadNext={handleLoadNext}
+                onDetail={handleDetail}
+              />
             </DataListStateResolver>
-          </Uu5Elements.Block>
-        </ControllerProvider>
-      </>
+          </DataListStateResolver>
+        </Uu5Elements.Block>
+      </ControllerProvider>
     );
     //@@viewOff:render
   },
@@ -182,6 +182,29 @@ function getActions(props) {
   return actionList;
 }
 
+//@@viewOn:helpers
+function mapTripListDataByLocation(tripDataList, locationDataList) {
+  let trip;
+  if (tripDataList.state === "ready" && locationDataList.state === "ready") {
+    trip = tripDataList.data.map((tripItem) => {
+      const location = getLocationById(locationDataList.data, tripItem.data.locationId);
+
+      if (location) {
+        tripItem.data.locationData = location.data;
+      }
+
+      return tripItem;
+    });
+  }
+
+  return trip;
+}
+
+function getLocationById(locationDataList, id) {
+  const location = locationDataList.find((location) => location.data.id === id);
+  return location;
+}
+//@@viewOff:helpers
 //@@viewOff:helpers
 
 //@@viewOn:exports

@@ -62,4 +62,5 @@ function getLocationById(locationDataList, id) {
   return location;
 }
 //@@viewOff:helpers
+
 export default Content;

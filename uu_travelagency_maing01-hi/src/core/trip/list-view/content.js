@@ -7,14 +7,9 @@ import Tile from "./tile";
 import Config from "./config/config";
 //@@viewOff:imports
 
-const TILE_HEIGHT = 300; // px
-
-// Space between rows in grid [px]
-const ROW_SPACING = UuGds.SpacingPalette.getValue(["fixed", "c"]);
-
 //@@viewOn:css
 const Css = {
-  grid: () => Config.Css.css({ marginTop: UuGds.SpacingPalette.getValue(["fixed", "c"]) }),
+  grid: () => Config.Css.css({}),
 };
 //@@viewOff:css
 
@@ -53,16 +48,14 @@ export const Content = createVisualComponent({
       <div {...attrs}>
         <FilterBar disabled={tripDataList.state !== "ready"} />
         <SorterBar disabled={tripDataList.state !== "ready"} />
-        <Grid
-          onLoad={handleLoadNext}
-          tileMinWidth={270}
-          tileMaxWidth={600}
-          tileHeight={TILE_HEIGHT}
-          horizontalGap={UuGds.SpacingPalette.getValue(["fixed", "c"])}
-          verticalGap={ROW_SPACING}
-          className={Css.grid()}
-        >
-          <Tile {...tileProps} />
+        <Grid onLoad={handleLoadNext} tileMinWidth={300} tileMaxWidth={500} className={Css.grid()}>
+          {(tripDataObject) => (
+            <Tile
+              {...tileProps}
+              tripDataObject={tripDataObject.data}
+              locationDataObject={getLocationObjectById(locationDataList, tripDataObject.data.data.locationId)}
+            />
+          )}
         </Grid>
         <FilterManagerModal />
         <SorterManagerModal />
@@ -73,6 +66,10 @@ export const Content = createVisualComponent({
 });
 
 //@@viewOn:helpers
+function getLocationObjectById(locationDataList, id) {
+  const location = locationDataList.data.find((location) => location.data.id === id);
+  return location;
+}
 //@@viewOff:helpers
 
 export default Content;

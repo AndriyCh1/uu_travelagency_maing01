@@ -53,10 +53,11 @@ class GetAbl {
     const trip = await this.dao.get(awid, dtoIn.id);
 
     if (!trip) {
+      // 3.1
       throw new Errors.Get.TripDoesNotExist(uuAppErrorMap, { tripId: dtoIn.id });
     }
 
-    // hds 4
+    // HDS 4
     const dtoOut = {
       ...trip,
       uuAppErrorMap,

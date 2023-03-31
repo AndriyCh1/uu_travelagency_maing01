@@ -53,6 +53,7 @@ class UpdateAbl {
     const isTripExecutives = userProfile.includes(Profiles.TRIP_EXECUTIVES);
 
     if (!isTripExecutives && !isAuthorities) {
+      // 3.1
       throw new Errors.Update.UserNotAuthorized(
         { uuAppErrorMap },
         { userProfile, expectedProfile: [Profiles.AUTHORITIES, Profiles.TRIP_EXECUTIVES] }
@@ -63,22 +64,22 @@ class UpdateAbl {
     const trip = await this.dao.get(awid, dtoIn.id);
 
     if (!trip) {
+      // 4.1
       throw new Errors.Update.TripDoesnotExist({ uuAppErrorMap }, { tripId: dtoIn.id });
     }
 
     // HDS 5
-
     let toUpdate = { id: dtoIn.id };
     if (dtoIn.name) {
       toUpdate.name = dtoIn.name;
     }
 
-    const isInCorrectState = trip.state === Trip.States.ACTIVE;
+    const isInCorrectState = trip.state !== Trip.States.ACTIVE;
     const hasRequiredFields = dtoIn.locationId || dtoIn.price || dtoIn.date;
     const hasParticipants = trip.participantIdList?.length;
 
     if (hasRequiredFields) {
-      if (isInCorrectState && hasRequiredFields && hasParticipants) {
+      if (!isInCorrectState && hasRequiredFields && hasParticipants) {
         throw new Errors.Update.UpdatingUnavailable(uuAppErrorMap);
       }
 
@@ -86,17 +87,20 @@ class UpdateAbl {
       toUpdate.date = dtoIn.date;
     }
 
-    // HDS 6, 6.1, 6.2, 6.3
+    // HDS 6
     if (dtoIn.locationId) {
+      // 6.1
       const locationStateCheck = await this.locationDao.getById(awid, dtoIn.locationId);
 
       if (!locationStateCheck) {
+        // 6.2
         throw new Errors.Update.LocationDoesNotExist({ uuAppErrorMap });
       } else {
         toUpdate.locationId = dtoIn.locationId;
       }
 
       if (locationStateCheck.state === Location.States.PROBLEM || locationStateCheck.state === Location.States.CLOSED) {
+        // 6.3
         throw new Errors.Update.LocationIsUnavailable({ uuAppErrorMap });
       }
     }
@@ -114,10 +118,12 @@ class UpdateAbl {
     // HDS 8
     toUpdate.awid = awid;
     let updatedTrip;
+
     try {
       updatedTrip = await this.dao.update(toUpdate);
     } catch (e) {
       if (e instanceof ObjectStoreError) {
+        // 8.1
         throw new Errors.Update.TripDaoUpdateFailed({ uuAppErrorMap }, { cause: e });
       }
 

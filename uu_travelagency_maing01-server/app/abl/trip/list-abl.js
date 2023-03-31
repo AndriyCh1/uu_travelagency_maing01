@@ -54,7 +54,7 @@ class ListAbl {
       [Profiles.LOCATION_EXECUTIVES]: new Set([TravelAgency.States.ACTIVE]),
     };
 
-    // 2.1, 2.1.1, 2.2, 2.2.1, 2.2.2
+    // 2.1, 2.2
     await InstanceChecker.ensureInstanceAndState(
       awid,
       allowedStateRules,

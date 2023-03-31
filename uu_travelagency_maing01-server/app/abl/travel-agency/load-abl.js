@@ -1,64 +1,63 @@
 "use strict";
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { AuthorizationService } = require("uu_appg01_server").Authorization;
 const { UuAppWorkspace } = require("uu_appg01_server").Workspace;
+const { UriBuilder } = require("uu_appg01_server").Uri;
+const InstanceChecker = require("../../component/instance-checker");
 const Errors = require("../../api/errors/travel-agency-error.js");
-const Warnings = require("../../api/warnings/travel-agency-warnings");
-const { Schemas, TravelAgency } = require("../constants.js");
+const { Schemas } = require("../constants.js");
 
 class LoadAbl {
   constructor() {
     this.validator = Validator.load();
     this.dao = DaoFactory.getDao(Schemas.TRAVEL_AGENCY);
+    this.locationDao = DaoFactory.getDao(Schemas.LOCATION);
   }
 
   async load(uri, session, uuAppErrorMap = {}) {
-    // TODO Implement according to application needs...
-    // let awid = uri.getAwid();
-    //
-    // // HDS 1
-    // const dtoOut = await UuAppWorkspace.load(uri, session, uuAppErrorMap);
-    //
-    // if (dtoOut.territoryData) {
-    //   dtoOut.territoryData = {
-    //     data: {
-    //       ...dtoOut.territoryData.data.data,
-    //       uuAppWorkspaceUri: dtoOut.territoryData.data.artifact.uuAppWorkspaceUri,
-    //     },
-    //     sysData: dtoOut.territoryData.sysData,
-    //   };
-    // }
-    //
-    // // HDS 2
-    // const sysState = dtoOut.sysData.awidData.sysState;
-    //
-    // if (sysState !== UuAppWorkspace.SYS_STATES.CREATED && sysState !== UuAppWorkspace.SYS_STATES.ASSIGNED) {
-    //   const trips = await InstanceChecker.ensureInstance(awid, Errors, uuAppErrorMap);
-    //   const categoryList = await this.categoryDao.list(awid);
-    //   dtoOut.data = { ...trips, categoryList: categoryList.itemList, relatedObjectsMap: {} };
-    // }
-    //
-    // // HDS 3
-    // dtoOut.uuAppErrorMap = uuAppErrorMap;
-    // return dtoOut;
-  }
+    // TODO: get rid of this
+    // return await UuAppWorkspace.load(uri, session, uuAppErrorMap);
 
-  async loadBasicData(uri, session, uuAppErrorMap = {}) {
     // HDS 1
-    const dtoOut = await UuAppWorkspace.loadBasicData(uri, session, uuAppErrorMap);
-
-    // TODO Implement according to application needs...
-    // const awid = uri.getAwid();
-    // const workspace = await UuAppWorkspace.get(awid);
-    // if (workspace.sysState !== UuAppWorkspace.SYS_STATES.CREATED &&
-    //    workspace.sysState !== UuAppWorkspace.SYS_STATES.ASSIGNED
-    // ) {
-    //   const appData = await this.dao.get(awid);
-    //   dtoOut.data = { ...appData, relatedObjectsMap: {} };
-    // }
+    const dtoOut = await UuAppWorkspace.load(uri, session, uuAppErrorMap);
 
     // HDS 2
+    const awid = uri.getAwid();
+    const awidData = await UuAppWorkspace.get(awid);
+
+    // HDS 3
+    const relatedObjectsMap = {};
+
+    // HDS 4
+    const cmdUri = UriBuilder.parse(uri).setUseCase("sys/uuAppWorkspace/load");
+    const authorizationResult = await AuthorizationService.authorize(session, cmdUri.toUri());
+
+    const profileData = {
+      uuIdentityProfileList: authorizationResult.getIdentityProfiles(),
+      profileList: authorizationResult.getAuthorizedProfiles(),
+    };
+
+    // HDS 5
+    dtoOut.sysData = {
+      ...dtoOut.sysData,
+      awidData,
+      profileData,
+    };
+
+    // HDS 6
+    if (
+      awidData.sysState !== UuAppWorkspace.SYS_STATES.CREATED &&
+      awidData.sysState !== UuAppWorkspace.SYS_STATES.ASSIGNED
+    ) {
+      const travelAgency = await InstanceChecker.ensureInstance(awid, Errors, uuAppErrorMap);
+      const locationList = await this.locationDao.list(awid);
+
+      dtoOut.data = { ...travelAgency, locationList: locationList.itemList, relatedObjectsMap };
+    }
+
+    // HDS 7
+    dtoOut.uuAppErrorMap = uuAppErrorMap;
     return dtoOut;
   }
 }

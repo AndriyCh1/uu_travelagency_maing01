@@ -17,7 +17,8 @@ class InitAbl {
     const awid = uri.getAwid();
     // HDS 1
     let validationResult = this.validator.validate("sysUuAppWorkspaceInitDtoInType", dtoIn);
-    // A1, A2, A3, A4
+
+    // 1.1, 1.2, 1.2.1, 1.3, 1.3.1, 1.4
     let uuAppErrorMap = ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
@@ -30,8 +31,8 @@ class InitAbl {
       try {
         return DaoFactory.getDao(schema).createSchema();
       } catch (e) {
-        // A3
-        throw new Errors.Init.SchemaDaoCreateSchemaFailed({ uuAppErrorMap }, e);
+        // 2.1
+        throw new Errors.Init.SchemaDaoCreateSchemaFailed({ uuAppErrorMap }, { cause: e });
       }
     });
 
@@ -40,12 +41,15 @@ class InitAbl {
 
     // HDS 4, HDS 5
     if (!travelAgency) {
+      // 4.1, 4.2
       const travelAgencyUuObject = {
         name: dtoIn.name,
         state: TravelAgency.States.ACTIVE,
         awid,
       };
+
       try {
+        // 5.1
         await this.dao.create(travelAgencyUuObject);
       } catch (error) {
         throw new Errors.Init.TravelAgencyDaoCreateFailed({ uuAppErrorMap }, { cause: e });
@@ -69,7 +73,7 @@ class InitAbl {
 
     const dtoOut = {
       ...workspace,
-      uuAppErrorMap: uuAppErrorMap,
+      uuAppErrorMap,
     };
 
     return dtoOut;

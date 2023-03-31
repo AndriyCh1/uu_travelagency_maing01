@@ -57,7 +57,7 @@ export const UpdateModal = createVisualComponent({
 
     async function handleSubmit(event) {
       try {
-        await props.tripDataObject.handlerMap.update({ id: tripDataObject.data.id, ...event.data.value });
+        await tripDataObject.handlerMap.update({ id: tripDataObject.data.id, ...event.data.value });
         onSaveDone(trip);
       } catch (error) {
         UpdateModal.logger.error("Error submitting form", error);
@@ -98,7 +98,6 @@ export const UpdateModal = createVisualComponent({
               inputAttrs={{ maxLength: 255 }}
               className={Css.input()}
               initialValue={trip.name}
-              required
             />
             <FormSelect
               label={lsi.location}
@@ -120,7 +119,6 @@ export const UpdateModal = createVisualComponent({
               className={Css.input()}
               pickerType="horizontal"
               initialValue={trip.date}
-              required
             />
             <FormTextArea
               label={lsi.text}

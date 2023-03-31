@@ -69,7 +69,7 @@ export const ListProvider = createComponent({
     }
 
     async function handleUpdate(trip) {
-      return await Calls.Trip.update({ id: trip.id });
+      return await Calls.Trip.update({ id: trip.id, ...trip });
     }
 
     function handleDelete(values) {

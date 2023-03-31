@@ -7,6 +7,10 @@ const Warnings = require("../../api/warnings/trip-warnings");
 const InstanceChecker = require("../../component/instance-checker");
 const { Profiles, Schemas, Trip, TravelAgency, Location } = require("../constants");
 
+const DEFAULTS = {
+  state: Trip.States.INIT,
+};
+
 class CreateAbl {
   constructor() {
     this.validator = Validator.load();
@@ -33,7 +37,7 @@ class CreateAbl {
       uuIdentity: session.getIdentity().getUuIdentity(),
       creatorName: session.getIdentity().getName(),
       creationDate: new Date(),
-      state: Trip.States.INIT,
+      state: DEFAULTS.state,
     };
 
     const uuObject = {
@@ -47,7 +51,7 @@ class CreateAbl {
       [Profiles.TRIP_EXECUTIVES]: new Set([TravelAgency.States.ACTIVE, TravelAgency.States.UNDER_CONSTRUCTION]),
     };
 
-    // 2.1, 2.1.1, 2.2, 2.2.1, 2.2.2
+    // 2.1, 2.2
     await InstanceChecker.ensureInstanceAndState(
       awid,
       allowedStateRules,

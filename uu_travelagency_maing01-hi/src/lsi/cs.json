@@ -30,7 +30,62 @@
     "initialize": "Inicializovat"
   },
   "Menu": {
-    "home": "Vítejte",
+    "trips": "Výlety",
     "about": "O aplikaci"
+  },
+  "UuTravelagency.Core.Trip.ListView": {
+    "header": "Výlety",
+    "date": "Datum",
+    "price": "Cena",
+    "location": "Místo",
+    "dateFrom": "Od",
+    "dateTo": "Do",
+    "createTrip": "Vytvořit výlet"
+  },
+  "UuTravelagency.Core.Trip.ListView.Tile": {
+    "seeMore": "Více informací",
+    "noImage": "Žádný obrázek",
+    "freePlaces": "Zbývá {0} místo (míst)",
+    "noFreePlaces": "Bohužel nejsou žádná volná místa"
+  },
+  "UuTravelagency.Core.Trip.ListView.CreateModal": {
+    "header": "Vytvořit výlet",
+    "name": "Název",
+    "location": "Místo",
+    "price": "Cena",
+    "freePlaces": "Volná místa",
+    "date": "Datum",
+    "text": "Text",
+    "submit": "Vytvořit",
+    "cancel": "Zrušit"
+  },
+  "UuTravelagency.Core.Trip.ListView.UpdateModal": {
+    "header": "Upravit výlet",
+    "name": "Název",
+    "location": "Místo",
+    "price": "Cena",
+    "freePlaces": "Volná místa",
+    "date": "Datum",
+    "text": "Text",
+    "submit": "Upravit",
+    "cancel": "Zrušit"
+  },
+  "UuTravelagency.Core.Trip.ListView.DeleteModal": {
+    "cancel": "Ne",
+    "header": "Potvrzení smazání výletu",
+    "delete": "Ano",
+    "submitting": "Opravdu chcete smazat výlet {0}?"
+  },
+  "UuTravelagency.Core.Trip.DetailView.Content": {
+    "details": "Podrobnosti",
+    "participants": "Účastníci",
+    "noImage": "Žádný obrázek",
+    "signUp": "Přihlásit se na výlet",
+    "tripName": "Název výletu",
+    "price": "Cena",
+    "freePlaces": "Volná místa",
+    "location": "Místo",
+    "date": "Datum",
+    "locationLink": "Webová stránka"
   }
 }

@@ -30,11 +30,15 @@ const DetailView = createVisualComponent({
 
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props);
+
     return (
       <Uu5Elements.Block {...attrs} header={tripDataObject?.data?.name} headerType="heading" card="content">
         <DataObjectStateResolver dataObject={tripDataObject}>
           <DataListStateResolver dataList={locationDataList}>
-            <Content tripDataObject={tripDataObject} locationDataList={locationDataList} />
+            {() => {
+              const locationDataObject = getLocationDataObjectById(locationDataList, tripDataObject.data.locationId);
+              return <Content tripDataObject={tripDataObject} locationDataObject={locationDataObject} />;
+            }}
           </DataListStateResolver>
         </DataObjectStateResolver>
       </Uu5Elements.Block>
@@ -44,6 +48,9 @@ const DetailView = createVisualComponent({
 });
 
 //@@viewOn:helpers
+function getLocationDataObjectById(locationDataList, id) {
+  return locationDataList.data.find((location) => location.data.id === id);
+}
 //@@viewOff:helpers
 
 //@@viewOn:exports

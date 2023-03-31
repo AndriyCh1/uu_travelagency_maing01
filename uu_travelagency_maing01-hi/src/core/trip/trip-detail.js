@@ -6,9 +6,9 @@ import LocationListProvider from "../location/list-provider";
 import DetailView from "../trip/detail-view";
 //@@viewOff:imports
 
-const Trip = createVisualComponent({
+const TripDetail = createVisualComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "Detail",
+  displayName: Config.TAG + "TripDetail",
   //@@viewOff:statics
 
   //@@viewOn:propTypes
@@ -37,4 +37,4 @@ const Trip = createVisualComponent({
   },
 });
 
-export default Trip;
+export default TripDetail;

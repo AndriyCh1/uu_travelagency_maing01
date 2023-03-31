@@ -2,13 +2,13 @@
 import { createVisualComponent, useRoute } from "uu5g05";
 import { RouteController } from "uu_plus4u5g02-app";
 import RouteContainer from "../core/route-container";
-import TripDetail from "../core/trip/detail";
+import Trip from "../core/trip/trip-detail";
 import Config from "./config/config";
 //@@viewOff:imports
 
-const Trip = createVisualComponent({
+const TripDetail = createVisualComponent({
   //@@viewOn:statics
-  displayName: Config.TAG + "Trip",
+  displayName: Config.TAG + "TripDetail",
   //@@viewOff:statics
 
   //@@viewOn:propTypes
@@ -28,7 +28,7 @@ const Trip = createVisualComponent({
     return (
       <RouteController>
         <RouteContainer>
-          <TripDetail tripId={route.params.id} />
+          <Trip tripId={route.params.id} />
         </RouteContainer>
       </RouteController>
     );
@@ -36,4 +36,4 @@ const Trip = createVisualComponent({
   },
 });
 
-export default Trip;
+export default TripDetail;

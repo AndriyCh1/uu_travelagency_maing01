@@ -32,7 +32,7 @@ export const CreateModal = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    tripDataObject: PropTypes.object.isRequired,
+    tripDataList: PropTypes.object.isRequired,
     locationDataList: PropTypes.object.isRequired,
     shown: PropTypes.bool,
     onSaveDone: PropTypes.func,
@@ -50,13 +50,13 @@ export const CreateModal = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, locationDataList } = props;
+    const { tripDataList, locationDataList } = props;
 
     const lsi = useLsi(importLsi, [CreateModal.uu5Tag]);
 
     async function handleSubmit(event) {
       try {
-        const trip = await props.tripDataList.handlerMap.create(event.data.value);
+        const trip = await tripDataList.handlerMap.create(event.data.value);
         props.onSaveDone(trip);
       } catch (error) {
         CreateModal.logger.error("Error submitting form", error);

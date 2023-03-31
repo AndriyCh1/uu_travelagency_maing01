@@ -36,7 +36,7 @@ const RouteBar = createVisualComponent({
       {
         children: <Lsi import={importLsi} path={["Menu", "trips"]} />,
         onClick: () => setRoute("trips"),
-        icon: "uugdsstencil-navigation-portal",
+        icon: "mdi-airballoon",
       },
       {
         children: <Lsi import={importLsi} path={["Menu", "about"]} />,

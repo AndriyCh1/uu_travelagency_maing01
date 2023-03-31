@@ -145,11 +145,17 @@ const ListView = createVisualComponent({
     };
 
     const handleDeleteCancel = () => setDeleteData({ shown: false });
+
+    const profileList = systemData.profileData.uuIdentityProfileList;
+    const isAuthority = profileList.includes("Authorities");
+    const isTripExecutive = profileList.includes("TripExecutives");
+
+    const actionPermissions = { trip: { create: isAuthority || isTripExecutive } };
     //@@viewOff:private
 
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props);
-    const actionList = getActions(props, { handleCreate });
+    const actionList = getActions(props, actionPermissions, { handleCreate });
 
     return (
       <>
@@ -217,7 +223,6 @@ const ListView = createVisualComponent({
 
 //@@viewOn:helpers
 
-// filter by location, date
 function getFilters(locationDataList, lsi) {
   let filterList = [];
 
@@ -255,7 +260,6 @@ function getFilters(locationDataList, lsi) {
   return filterList;
 }
 
-// sort by date, price
 function getSorters(lsi) {
   const sorters = [
     {
@@ -271,7 +275,7 @@ function getSorters(lsi) {
   return sorters;
 }
 
-function getActions(props, { handleCreate }) {
+function getActions(props, actionPermissions, { handleCreate }) {
   const actionList = [];
 
   if (props.tripDataList.data) {
@@ -283,13 +287,15 @@ function getActions(props, { handleCreate }) {
       component: SorterButton,
     });
 
-    actionList.push({
-      icon: "mdi-plus",
-      children: <Lsi import={importLsi} path={[ListView.uu5Tag, "createTrip"]} />,
-      primary: true,
-      onClick: handleCreate,
-      disabled: props.disabled,
-    });
+    if (actionPermissions.trip.create) {
+      actionList.push({
+        icon: "mdi-plus",
+        children: <Lsi import={importLsi} path={[ListView.uu5Tag, "createTrip"]} />,
+        primary: true,
+        onClick: handleCreate,
+        disabled: props.disabled,
+      });
+    }
   }
 
   return actionList;

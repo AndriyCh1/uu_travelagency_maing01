@@ -1,6 +1,6 @@
 //@@viewOn:imports
-import { createVisualComponent, useEffect, Utils, PropTypes, useLsi } from "uu5g05";
-import Uu5Elements, { Text, Button, Pending, Icon } from "uu5g05-elements";
+import { createVisualComponent, useEffect, Utils, PropTypes, useLsi, useScreenSize } from "uu5g05";
+import Uu5Elements, { Text, Button, Pending, Icon, Box } from "uu5g05-elements";
 import Config from "./config/config";
 import ImagePlaceholder from "../../../assets/image-placeholder.jpg";
 import importLsi from "../../../lsi/import-lsi";
@@ -9,16 +9,36 @@ import importLsi from "../../../lsi/import-lsi";
 
 //@@viewOn:css
 const Css = {
-  container: () =>
-    Config.Css.css({
-      display: "flex",
-      margin: "10px",
-      gap: "10px",
-    }),
-  imageContainer: () =>
-    Config.Css.css({
-      width: "50%",
-    }),
+  container: (screenSize) => {
+    let styles;
+
+    switch (screenSize) {
+      case "m":
+      case "l":
+      case "xl":
+        styles = { display: "flex", gap: "15px" };
+        break;
+      default:
+        styles = { display: "block" };
+    }
+
+    return Config.Css.css({ ...styles, margin: "10px" });
+  },
+  imageContainer: (screenSize) => {
+    let styles;
+
+    switch (screenSize) {
+      case "m":
+      case "l":
+      case "xl":
+        styles = { width: "50%" };
+        break;
+      default:
+        styles = { width: "100%", marginBottom: "10px" };
+    }
+
+    return Config.Css.css({ ...styles });
+  },
   image: () =>
     Config.Css.css({
       width: "100%",
@@ -30,32 +50,30 @@ const Css = {
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-      width: "49.99%",
       gap: "15px",
     }),
   content: () =>
     Config.Css.css({
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",
+      alignItems: "start",
       overflow: "hidden",
       height: "100%",
+      fontSize: "1rem",
+      gap: "15px",
+    }),
+  text: () =>
+    Config.Css.css({
+      verticalAlign: "center",
+    }),
+  icon: () =>
+    Config.Css.css({
+      marginRight: "10px",
+      fontSize: "1.4rem",
     }),
   actionButtons: () =>
     Config.Css.css({
       marginLeft: "auto",
-    }),
-  price: () =>
-    Config.Css.css({
-      fontSize: "22px",
-      color: "primary",
-    }),
-  mainInfo: () =>
-    Config.Css.css({
-      fontSize: "16px",
-      color: "primary",
-      display: "flex",
-      gap: "10px",
     }),
 };
 //@@viewOff:css
@@ -85,6 +103,7 @@ export const Tile = createVisualComponent({
     const { tripDataObject, locationDataObject, onDetail, onDelete } = props;
     const actionsDisabled = tripDataObject.state === "pending" || locationDataObject.state === "pending";
     const lsi = useLsi(importLsi, [Tile.uu5Tag]);
+    const [screenSize] = useScreenSize();
 
     const handleDetail = () => {
       onDetail(tripDataObject.data);
@@ -148,8 +167,8 @@ export const Tile = createVisualComponent({
         actionList={getActions()}
       >
         {(tile) => (
-          <div className={Css.container()}>
-            <div className={Css.imageContainer()}>
+          <div className={Css.container(screenSize)}>
+            <div className={Css.imageContainer(screenSize)}>
               {location.imageUrl && <img src={location.imageUrl} alt={location.name} className={Css.image()} />}
               {location.image && !location.imageUrl && <Pending size="xl" />}
               {!location.image && !location.imageUrl && (
@@ -158,14 +177,23 @@ export const Tile = createVisualComponent({
             </div>
             <div className={Css.contentContainer()}>
               <div className={Css.content()}>
-                <Text>{location.name}</Text>
-                <Text>{Utils.String.format(lsi.freePlaces, trip.freePlaces)}</Text>
-                <div className={Css.mainInfo()}>
-                  <Text>{trip.date}</Text>
-                  <Text>{trip.price} €</Text>
-                </div>
+                <Text className={Css.text()}>
+                  <Icon icon="mdi-map-marker" className={Css.icon()} />
+                  {location.name}
+                </Text>
+                <Text className={Css.text()}>
+                  <Icon icon="mdi-account-multiple" className={Css.icon()} />
+                  {Utils.String.format(lsi.freePlaces, trip.freePlaces)}
+                </Text>
+                <Text className={Css.text()}>
+                  <Icon icon="mdi-calendar-multiple" className={Css.icon()} />
+                  {trip.date}
+                </Text>
+                <Text className={Css.text()}>
+                  <Icon icon="mdi-cash" className={Css.icon()} />
+                  {trip.price} €
+                </Text>
               </div>
-
               <div className={Css.actionButtons()}>
                 <Button onClick={handleDetail}>
                   <Icon icon="eye" />

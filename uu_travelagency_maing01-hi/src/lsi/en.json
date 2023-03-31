@@ -45,7 +45,7 @@
   "UuTravelagency.Core.Trip.ListView.Tile": {
     "seeMore": "More details",
     "noImage": "No image",
-    "freePlaces": "We have {0} spot (s) left",
+    "freePlaces": "{0} spot (s) left",
     "noFreePlaces": "Unfortunately, there are no free spots"
   },
   "UuTravelagency.Core.Trip.ListView.CreateModal": {
@@ -75,5 +75,17 @@
     "header": "Deleting trip submitting",
     "delete": "Yes",
     "submitting": "Do you really want to delete the trip \"{0}\"?"
+  },
+  "UuTravelagency.Core.Trip.DetailView.Content": {
+    "details": "Details",
+    "participants": "Participants",
+    "noImage": "No image",
+    "signUp": "Sign up for the trip",
+    "tripName": "Trip name",
+    "price": "Price",
+    "freePlaces": "Free places",
+    "location": "Location",
+    "date": "Date",
+    "locationLink": "Website"
   }
 }

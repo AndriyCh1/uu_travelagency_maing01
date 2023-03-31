@@ -1,9 +1,10 @@
 //@@viewOn:imports
-import "uu5g04-bricks";
-import { createVisualComponent, useEffect, Utils } from "uu5g05";
+import { createVisualComponent, useEffect, Utils, PropTypes, useLsi } from "uu5g05";
 import Uu5Elements, { Text, Button, Pending, Icon } from "uu5g05-elements";
 import Config from "./config/config";
 import ImagePlaceholder from "../../../assets/image-placeholder.jpg";
+import importLsi from "../../../lsi/import-lsi";
+
 //@@viewOff:imports
 
 //@@viewOn:css
@@ -65,7 +66,14 @@ export const Tile = createVisualComponent({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {},
+  propTypes: {
+    tripDataObject: PropTypes.object.isRequired,
+    locationDataObject: PropTypes.object.isRequired,
+    onDetail: PropTypes.func,
+    onUpdate: PropTypes.func,
+    onDelete: PropTypes.func,
+    tripsPermissions: PropTypes.object,
+  },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
@@ -74,8 +82,9 @@ export const Tile = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, locationDataObject, onDetail } = props;
+    const { tripDataObject, locationDataObject, onDetail, onDelete } = props;
     const actionsDisabled = tripDataObject.state === "pending" || locationDataObject.state === "pending";
+    const lsi = useLsi(importLsi, [Tile.uu5Tag]);
 
     const handleDetail = () => {
       onDetail(tripDataObject.data);
@@ -90,12 +99,19 @@ export const Tile = createVisualComponent({
       ) {
         locationDataObject.handlerMap
           .getImage(locationDataObject.data)
-          .catch((error) => Tile.logger.error("Error loading image", error));
+          .catch((e) => Tile.logger.error("Error loading image", e));
       }
     }, [locationDataObject]);
 
-    const handleUpdate = () => {};
-    const handleDelete = () => {};
+    const handleUpdate = (event) => {
+      event.stopPropagation();
+      props.onUpdate(tripDataObject);
+    };
+
+    const handleDelete = (event) => {
+      event.stopPropagation();
+      onDelete(tripDataObject);
+    };
 
     const getActions = () => {
       const actionList = [];
@@ -137,13 +153,13 @@ export const Tile = createVisualComponent({
               {location.imageUrl && <img src={location.imageUrl} alt={location.name} className={Css.image()} />}
               {location.image && !location.imageUrl && <Pending size="xl" />}
               {!location.image && !location.imageUrl && (
-                <img src={ImagePlaceholder} alt={"lsi.no images"} className={Css.image()} />
+                <img src={ImagePlaceholder} alt={lsi.noImage} className={Css.image()} />
               )}
             </div>
             <div className={Css.contentContainer()}>
               <div className={Css.content()}>
                 <Text>{location.name}</Text>
-                <Text>{trip.freePlaces} place (-s) left</Text>
+                <Text>{Utils.String.format(lsi.freePlaces, trip.freePlaces)}</Text>
                 <div className={Css.mainInfo()}>
                   <Text>{trip.date}</Text>
                   <Text>{trip.price} €</Text>
@@ -153,7 +169,7 @@ export const Tile = createVisualComponent({
               <div className={Css.actionButtons()}>
                 <Button onClick={handleDetail}>
                   <Icon icon="eye" />
-                  Lsi View details
+                  {lsi.seeMore}
                 </Button>
               </div>
             </div>

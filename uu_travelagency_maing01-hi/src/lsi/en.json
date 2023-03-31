@@ -39,6 +39,41 @@
     "price": "Price",
     "location": "Location",
     "dateFrom": "From",
-    "dateTo": "To"
+    "dateTo": "To",
+    "createTrip": "Create Trip"
+  },
+  "UuTravelagency.Core.Trip.ListView.Tile": {
+    "seeMore": "More details",
+    "noImage": "No image",
+    "freePlaces": "We have {0} spot (s) left",
+    "noFreePlaces": "Unfortunately, there are no free spots"
+  },
+  "UuTravelagency.Core.Trip.ListView.CreateModal": {
+    "header": "Create trip",
+    "name": "Name",
+    "location": "Location",
+    "price": "Price",
+    "freePlaces": "Free places",
+    "date": "Date",
+    "text": "Text",
+    "submit": "Create",
+    "cancel": "Cancel"
+  },
+  "UuTravelagency.Core.Trip.ListView.UpdateModal": {
+    "header": "Update trip",
+    "name": "Name",
+    "location": "Location",
+    "price": "Price",
+    "freePlaces": "Free places",
+    "date": "Date",
+    "text": "Text",
+    "submit": "Update",
+    "cancel": "Cancel"
+  },
+  "UuTravelagency.Core.Trip.ListView.DeleteModal": {
+    "cancel": "No",
+    "header": "Deleting trip submitting",
+    "delete": "Yes",
+    "submitting": "Do you really want to delete the trip \"{0}\"?"
   }
 }

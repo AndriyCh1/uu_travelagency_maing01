@@ -34,9 +34,9 @@ class LoadAbl {
     // const sysState = dtoOut.sysData.awidData.sysState;
     //
     // if (sysState !== UuAppWorkspace.SYS_STATES.CREATED && sysState !== UuAppWorkspace.SYS_STATES.ASSIGNED) {
-    //   const jokes = await InstanceChecker.ensureInstance(awid, Errors, uuAppErrorMap);
+    //   const trips = await InstanceChecker.ensureInstance(awid, Errors, uuAppErrorMap);
     //   const categoryList = await this.categoryDao.list(awid);
-    //   dtoOut.data = { ...jokes, categoryList: categoryList.itemList, relatedObjectsMap: {} };
+    //   dtoOut.data = { ...trips, categoryList: categoryList.itemList, relatedObjectsMap: {} };
     // }
     //
     // // HDS 3

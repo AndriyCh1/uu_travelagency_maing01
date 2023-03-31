@@ -23,8 +23,13 @@ export const ListProvider = createComponent({
       handlerMap: {
         load: handleLoad,
         loadNext: handleLoadNext,
+        reload: handleReload,
+        create: handleCreate,
       },
-      itemHandlerMap: {},
+      itemHandlerMap: {
+        update: handleUpdate,
+        delete: handleDelete,
+      },
     });
 
     const filterList = useRef([]);
@@ -53,6 +58,22 @@ export const ListProvider = createComponent({
 
       const dtoIn = { ...criteria, pageInfo };
       return Calls.Trip.list(dtoIn);
+    }
+
+    function handleReload() {
+      return handleLoad({ filterList: filterList.current, sorterList: sorterList.current });
+    }
+
+    function handleCreate(values) {
+      return Calls.Trip.create(values);
+    }
+
+    async function handleUpdate(trip) {
+      return await Calls.Trip.update({ id: trip.id });
+    }
+
+    function handleDelete(values) {
+      return Calls.Trip.delete(values);
     }
 
     const value = useMemo(() => {

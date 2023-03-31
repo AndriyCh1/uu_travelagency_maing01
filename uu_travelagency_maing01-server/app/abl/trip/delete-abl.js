@@ -65,10 +65,11 @@ class DeleteAbl {
       throw new Errors.Delete.TripDoesNotExist({ uuAppErrorMap }, { tripId: dtoIn.id });
     }
 
+    // TODO: get rid of comments
     // HDS 5
-    if (trip.state !== Trip.States.CLOSED) {
-      throw new Errors.Delete.DeletingUnavailable({ uuAppErrorMap });
-    }
+    // if (trip.state !== Trip.States.CLOSED) {
+    //   throw new Errors.Delete.DeletingUnavailable({ uuAppErrorMap });
+    // }
 
     // HDS 6
     await this.dao.delete(awid, trip.id);

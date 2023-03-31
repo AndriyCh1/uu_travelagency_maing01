@@ -24,6 +24,18 @@ const Calls = {
       const commandUri = Calls.getCommandUri("trip/get");
       return Calls.call("get", commandUri, dtoIn);
     },
+    create(dtoIn) {
+      const commandUri = Calls.getCommandUri("trip/create");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+    update(dtoIn) {
+      const commandUri = Calls.getCommandUri("trip/update");
+      return Calls.call("post", commandUri, dtoIn);
+    },
+    delete(dtoIn) {
+      const commandUri = Calls.getCommandUri("trip/delete");
+      return Calls.call("post", commandUri, dtoIn);
+    },
   },
 
   Location: {

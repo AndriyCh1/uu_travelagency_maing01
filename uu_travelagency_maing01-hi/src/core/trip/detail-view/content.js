@@ -1,9 +1,10 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, PropTypes, useEffect, useScreenSize, useLsi } from "uu5g05";
+import { createVisualComponent, Utils, PropTypes, useEffect, useScreenSize, useLsi, useCallback } from "uu5g05";
 import { Text, Icon, Link, Button, DateTime, Tabs, Box, Pending } from "uu5g05-elements";
 import Config from "./config/config";
 import ImagePlaceholder from "../../../assets/image-placeholder.jpg";
 import importLsi from "../../../lsi/import-lsi";
+import { useSystemData } from "uu_plus4u5g02";
 //@@viewOff:imports
 
 //@@viewOn:css
@@ -73,6 +74,11 @@ const Css = {
       alignItems: "center",
       fontSize: "1rem",
     }),
+  actionButtons: () =>
+    Config.Css.css({
+      display: "flex",
+      gap: "10px",
+    }),
   button: () =>
     Config.Css.css({
       fontSize: "1rem",
@@ -89,6 +95,8 @@ const Content = createVisualComponent({
   propTypes: {
     tripDataObject: PropTypes.object.isRequired,
     locationDataObject: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func,
+    onDelete: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -98,8 +106,9 @@ const Content = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, locationDataObject } = props;
+    const { tripDataObject, locationDataObject, onUpdate, onDelete } = props;
     const lsi = useLsi(importLsi, [Content.uu5Tag]);
+    const { data: systemData } = useSystemData();
 
     useEffect(() => {
       if (
@@ -121,6 +130,16 @@ const Content = createVisualComponent({
     const handleSignUp = () => {
       console.log("----- handleSignUp");
     };
+
+    const handleUpdate = (event) => {
+      event.stopPropagation();
+      onUpdate();
+    };
+
+    const handleDelete = useCallback((event) => {
+      event.stopPropagation();
+      onDelete();
+    }, []);
     //@@viewOff:private
 
     //@@viewOn:render
@@ -128,33 +147,70 @@ const Content = createVisualComponent({
     const trip = tripDataObject.data;
     const location = locationDataObject.data;
 
+    const profileList = systemData.profileData.uuIdentityProfileList;
+    const isAuthority = profileList.includes("Authorities");
+    const isTripExecutive = profileList.includes("TripExecutives");
+
+    const actionPermissions = {
+      trip: {
+        update: isAuthority || isTripExecutive,
+        delete: isAuthority || isTripExecutive,
+      },
+    };
+
     return (
       <div {...attrs}>
-        <Tabs
-          itemList={[
-            {
-              label: lsi.details,
-              icon: "mdi-information-outline",
-              children: <Details trip={trip} location={location} lsi={lsi} />,
-            },
-            { label: lsi.participants, icon: "mdi-account-group", children: "Participants" },
-          ]}
-        />
-        <Box significance="distinct" className={Css.footer()}>
-          <div>
-            <Text>
-              {trip.creatorName}, <DateTime dateFormat="short" timeFormat="none" value={trip.creationDate} />
-            </Text>
-          </div>
-          <Button onClick={handleSignUp} className={Css.button()}>
-            {lsi.signUp}
-          </Button>
-        </Box>
+        {tripDataObject.data && (
+          <>
+            <Tabs
+              itemList={[
+                {
+                  label: lsi.details,
+                  icon: "mdi-information-outline",
+                  children: <Details trip={trip} location={location} lsi={lsi} />,
+                },
+                { label: lsi.participants, icon: "mdi-account-group", children: "Participants" },
+              ]}
+            />
+            <Box significance="distinct" className={Css.footer()}>
+              <div>
+                <Text>
+                  {trip.creatorName}, <DateTime dateFormat="short" timeFormat="none" value={trip.creationDate} />
+                </Text>
+              </div>
+              <div className={Css.actionButtons()}>
+                <Button onClick={handleSignUp} className={Css.button()} colorScheme="building">
+                  {lsi.signUp}
+                </Button>
+                {getActionButtons(actionPermissions, { handleUpdate, handleDelete })}
+              </div>
+            </Box>
+          </>
+        )}
       </div>
     );
     //@@viewOff:render
   },
 });
+
+//@@viewOn:helpers
+function getActionButtons(actionPermissions, { handleUpdate, handleDelete }) {
+  return (
+    <>
+      {actionPermissions.trip.update && (
+        <Button onClick={handleUpdate} className={Css.button()} colorScheme="building">
+          <Icon icon="uugds-edit-inline" />
+        </Button>
+      )}
+      {actionPermissions.trip.delete && (
+        <Button onClick={handleDelete} className={Css.button()} colorScheme="building">
+          <Icon icon="uugds-delete" />
+        </Button>
+      )}
+    </>
+  );
+}
+//@@viewOff:helpers
 
 function Details({ trip, location, lsi }) {
   const [screenSize] = useScreenSize();
@@ -193,6 +249,7 @@ function Details({ trip, location, lsi }) {
     </>
   );
 }
+
 function Info({ children, label, icon, ...props }) {
   return (
     <Text className={Css.text()} {...props}>
@@ -207,4 +264,5 @@ function Info({ children, label, icon, ...props }) {
     </Text>
   );
 }
+
 export default Content;

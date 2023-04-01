@@ -80,12 +80,29 @@
     "details": "Details",
     "participants": "Participants",
     "noImage": "No image",
-    "signUp": "Sign up for the trip",
+    "signUp": "Sign up",
     "tripName": "Trip name",
     "price": "Price",
     "freePlaces": "Free places",
     "location": "Location",
     "date": "Date",
     "locationLink": "Website"
-  }
+  },
+  "UuTravelagency.Core.Trip.DetailView.UpdateModal": {
+    "header": "Update trip",
+    "name": "Name",
+    "location": "Location",
+    "price": "Price",
+    "freePlaces": "Free places",
+    "date": "Date",
+    "text": "Text",
+    "submit": "Update",
+    "cancel": "Cancel"
+  },
+  "UuTravelagency.Core.Trip.DetailView.DeleteModal": {
+  "cancel": "No",
+  "header": "Deleting trip submitting",
+  "delete": "Yes",
+  "submitting": "Do you really want to delete the trip \"{0}\"?"
+}
 }

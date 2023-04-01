@@ -24,11 +24,21 @@ export const TripProvider = createComponent({
     const tripDataObject = useDataObject({
       handlerMap: {
         load: handleLoad,
+        update: handleUpdate,
+        delete: Calls.Trip.delete,
       },
     });
 
     function handleLoad() {
       return Calls.Trip.get({ id: props.tripId });
+    }
+
+    function handleUpdate(trip) {
+      return Calls.Trip.update({ id: trip.id, ...trip });
+    }
+
+    function handleDelete(trip) {
+      Calls.Trip.delete({ id: trip.id });
     }
 
     //@@viewOff:private

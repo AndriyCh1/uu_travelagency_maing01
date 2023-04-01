@@ -212,6 +212,7 @@ const ListView = createVisualComponent({
             tripDataObject={activeDataObject}
             onDeleteDone={handleDeleteDone}
             onCancel={handleDeleteCancel}
+            onClose={handleDeleteCancel}
             shown
           />
         )}
@@ -310,6 +311,7 @@ function getTripObjectById(tripDataList, id) {
   return trip;
 }
 //@@viewOff:helpers
+
 //@@viewOn:exports
 export { ListView };
 export default ListView;

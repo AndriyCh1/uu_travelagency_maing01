@@ -100,7 +100,7 @@ export const Tile = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, locationDataObject, onDetail, onDelete } = props;
+    const { tripDataObject, locationDataObject, onDetail, onDelete, onUpdate } = props;
     const actionsDisabled = tripDataObject.state === "pending" || locationDataObject.state === "pending";
     const lsi = useLsi(importLsi, [Tile.uu5Tag]);
     const [screenSize] = useScreenSize();
@@ -124,7 +124,7 @@ export const Tile = createVisualComponent({
 
     const handleUpdate = (event) => {
       event.stopPropagation();
-      props.onUpdate(tripDataObject);
+      onUpdate(tripDataObject);
     };
 
     const handleDelete = (event) => {
@@ -196,8 +196,8 @@ export const Tile = createVisualComponent({
               </div>
               <div className={Css.actionButtons()}>
                 <Button onClick={handleDetail}>
-                  <Icon icon="eye" />
                   {lsi.seeMore}
+                  <Icon icon="mdi-chevron-right" className={Css.icon()} />
                 </Button>
               </div>
             </div>

@@ -11,11 +11,6 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
-      "sys/uuAppWorkspace/loadBasicData": {
-        "realization": "api/controllers/TravelAgencyController.loadBasicData",
-        "httpMethod": "GET",
-        "type": "CMD"
-      },
       "defaultUve": {
         "realization": "index.html",
         "httpMethod": "GET",

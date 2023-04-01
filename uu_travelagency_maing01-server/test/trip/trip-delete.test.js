@@ -13,11 +13,11 @@ afterEach(async () => {
   await TestHelper.teardown();
 });
 
-describe("Testing the trip/create uuCmd...", () => {
+describe("Testing the trip/delete uuCmd...", () => {
   test("HDS", async () => {
     await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
 
-    const locationDtoIn = {
+    const locationCreateDtoIn = {
       name: "Hotel Best Front Maritim",
       address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
       country: "Spain",
@@ -26,28 +26,28 @@ describe("Testing the trip/create uuCmd...", () => {
       image: getImageStream(),
     };
 
-    const locationDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationDtoIn);
+    const locationCreateDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationCreateDtoIn);
 
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
 
-    const dtoIn = {
-      name: "Incredible Spain",
+    const tripCreateDtoIn = {
+      name: "Name A",
       date: getTomorrowDate(),
-      price: 500,
-      freePlaces: 10,
-      locationId: locationDtoOut.id,
-      text: "You will not forget this unblievable trip...",
+      price: 100,
+      freePlaces: 1,
+      locationId: locationCreateDtoOut.id,
+      text: "Text A",
     };
 
-    const dtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);
+    const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
+
+    const dtoIn = {
+      id: tripCreateDtoOut.id,
+    };
+
+    const dtoOut = await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
 
     expect(dtoOut.status).toEqual(200);
-    expect(dtoOut.name).toEqual(dtoIn.name);
-    expect(dtoOut.date).toEqual(dtoIn.date);
-    expect(dtoOut.price).toEqual(dtoIn.price);
-    expect(dtoOut.freePlaces).toEqual(dtoIn.freePlaces);
-    expect(dtoOut.locationId).toEqual(dtoIn.locationId);
-    expect(dtoOut.text).toEqual(dtoIn.text);
     expect(dtoOut.uuAppErrorMap).toEqual({});
   });
 
@@ -69,21 +69,23 @@ describe("Testing the trip/create uuCmd...", () => {
 
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
 
-    const dtoIn = {
+    const createDtoIn = {
       name: "Incredible Spain",
       date: getTomorrowDate(),
       price: 500,
       freePlaces: 10,
       locationId: locationDtoOut.id,
       text: "You will not forget this unblievable trip...",
-      wrongKey: "This key is unsupported",
     };
 
-    const dtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);
+    const createDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, createDtoIn);
 
-    expect(dtoOut.status).toEqual(200);
+    const dtoIn = { id: createDtoOut.id, wrongKey: "This key is unsupported" };
+    const dtoOut = await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
 
-    const warning = dtoOut.uuAppErrorMap["uu-travel-agency/trip/create/unsupportedKeys"];
+    expect(createDtoOut.status).toEqual(200);
+
+    const warning = dtoOut.uuAppErrorMap["uu-travel-agency/trip/delete/unsupportedKeys"];
     expect(warning).toBeTruthy();
     expect(warning.type).toEqual("warning");
     expect(warning.message).toEqual("DtoIn contains unsupported keys.");
@@ -95,14 +97,12 @@ describe("Testing the trip/create uuCmd...", () => {
 
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
 
-    const dtoIn = {
-      name: "Incredible Spain",
-    };
+    const dtoIn = {};
 
     try {
-      await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);
+      await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
     } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/create/invalidDtoIn");
+      expect(e.code).toEqual("uu-travel-agency/trip/delete/invalidDtoIn");
       expect(e.message).toEqual("DtoIn is not valid.");
     }
   });
@@ -117,7 +117,7 @@ describe("Testing the trip/create uuCmd...", () => {
 
     await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
 
-    const locationDtoIn = {
+    const locationCreateDtoIn = {
       name: "Hotel Best Front Maritim",
       address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
       country: "Spain",
@@ -126,17 +126,20 @@ describe("Testing the trip/create uuCmd...", () => {
       image: getImageStream(),
     };
 
-    const locationDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationDtoIn);
+    const locationCreateDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationCreateDtoIn);
 
-    const dtoIn = {
+    await TestHelper.login(Profiles.TRIP_EXECUTIVES);
+
+    const tripCreateDtoIn = {
       name: "Incredible Spain",
       date: getTomorrowDate(),
       price: 500,
       freePlaces: 10,
-      locationId: locationDtoOut.id,
+      locationId: locationCreateDtoOut.id,
       text: "You will not forget this unblievable trip...",
-      wrongKey: "This key is unsupported",
     };
+
+    const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
 
     await TestHelper.teardown();
     await TestHelper.setup();
@@ -145,21 +148,23 @@ describe("Testing the trip/create uuCmd...", () => {
     await TestHelper.initUuAppWorkspace({ uuAppProfileAuthorities: ".", state: "closed" });
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
 
+    const dtoIn = { id: tripCreateDtoOut.id };
+
     try {
-      await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);
+      await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
     } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/create/travelAgencyNotInCorrectState");
+      expect(e.code).toEqual("uu-travel-agency/trip/delete/travelAgencyNotInCorrectState");
       expect(e.message).toEqual("UuObject travelAgency is not in correct state.");
       expect(e.paramMap.state).toEqual("closed");
     }
   });
 
-  test("Invalid date", async () => {
+  test("User not authorized", async () => {
     expect.assertions(2);
 
     await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
 
-    const locationDtoIn = {
+    const locationCreateDtoIn = {
       name: "Hotel Best Front Maritim",
       address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
       country: "Spain",
@@ -168,58 +173,53 @@ describe("Testing the trip/create uuCmd...", () => {
       image: getImageStream(),
     };
 
-    const locationDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationDtoIn);
+    const locationCreateDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationCreateDtoIn);
 
-    await TestHelper.login(Profiles.TRIP_EXECUTIVES);
+    await TestHelper.login(Profiles.READERS);
 
-    const invalidDate = new Date().toISOString().slice(0, 10);
-
-    const dtoIn = {
-      name: "Incredible Spain",
-      date: invalidDate,
-      price: 500,
-      freePlaces: 10,
-      locationId: locationDtoOut.id,
-      text: "You will not forget this unblievable trip...",
-      wrongKey: "This key is unsupported",
+    const tripCreateDtoIn = {
+      name: "Name A",
+      date: getTomorrowDate(),
+      price: 100,
+      freePlaces: 1,
+      locationId: locationCreateDtoOut.id,
+      text: "Text A",
     };
 
+    const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
+
+    const dtoIn = { id: tripCreateDtoOut.id };
+
+    await TestHelper.login(Profiles.READERS);
+
     try {
-      await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);
+      await TestHelper.executePostCommand(Commands.TRIP_UPDATE, dtoIn);
     } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/create/invalidDate");
-      expect(e.message).toEqual("Invalid date - it cannot be less then creationDate.");
+      expect(e.code).toEqual("uu-travel-agency/trip/delete/userNotAuthorized");
+      expect(e.message).toEqual("User not authorized.");
     }
   });
 
-  test("Location does not exist", async () => {
+  test("Trip does not exist ", async () => {
+    expect.assertions(2);
+    await TestHelper.login(Profiles.TRIP_EXECUTIVES);
+
+    const dtoIn = { id: "111111111111111111111111" };
+
+    try {
+      await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
+    } catch (e) {
+      expect(e.code).toEqual("uu-travel-agency/trip/delete/tripDoesNotExist");
+      expect(e.message).toEqual("Trip does not exist.");
+    }
+  });
+
+  test("Deleting unavailiable", async () => {
     expect.assertions(2);
 
-    await TestHelper.login(Profiles.TRIP_EXECUTIVES);
-
-    const nonexistentLocationId = "111111111111111111111111";
-
-    const dtoIn = {
-      name: "Incredible Spain",
-      date: getTomorrowDate(),
-      price: 500,
-      freePlaces: 10,
-      locationId: nonexistentLocationId,
-      text: "You will not forget this unblievable trip...",
-    };
-
-    try {
-      await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);
-    } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/create/locationDoesNotExist");
-      expect(e.message).toEqual("Provided location does not exist.");
-    }
-  });
-
-  test("Create failed", async () => {
     await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
 
-    const locationDtoIn = {
+    const locationCreateDtoIn = {
       name: "Hotel Best Front Maritim",
       address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
       country: "Spain",
@@ -228,24 +228,28 @@ describe("Testing the trip/create uuCmd...", () => {
       image: getImageStream(),
     };
 
-    const locationDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationDtoIn);
+    const locationCreateDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationCreateDtoIn);
 
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
 
-    const dtoIn = {
-      name: "Incredible Spain",
+    const tripCreateDtoIn = {
+      name: "Name A",
       date: getTomorrowDate(),
-      price: 500,
-      freePlaces: 10,
-      locationId: locationDtoOut.id,
-      text: "You will not forget this unblievable trip...",
+      price: 100,
+      freePlaces: 1,
+      locationId: locationCreateDtoOut.id,
+      text: "Text A",
     };
 
+    const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
+
+    const dtoIn = { id: tripCreateDtoOut.id };
+
     try {
-      await TestHelper.executePostCommand(Commands.TRIP_CREATE, { ...dtoIn, awid: "awid" });
+      await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
     } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/create/tripDaoCreateFailed");
-      expect(e.message).toEqual("Create trip by trip DAO create failed.");
+      expect(e.code).toEqual("uu-travel-agency/trip/delete/deletingUnavailiable");
+      expect(e.message).toEqual("The trip is not in closed state.");
     }
   });
 });

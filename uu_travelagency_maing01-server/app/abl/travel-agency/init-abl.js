@@ -27,14 +27,15 @@ class InitAbl {
     );
 
     // HDS 2
-    Object.values(Schemas).forEach(async (schema) => {
+
+    for (const schema of Object.values(Schemas)) {
       try {
-        return DaoFactory.getDao(schema).createSchema();
+        await DaoFactory.getDao(schema).createSchema();
       } catch (e) {
         // 2.1
         throw new Errors.Init.SchemaDaoCreateSchemaFailed({ uuAppErrorMap }, { cause: e });
       }
-    });
+    }
 
     // HDS 3
     let travelAgency = await this.dao.getByAwid(awid);
@@ -44,19 +45,18 @@ class InitAbl {
       // 4.1, 4.2
       const travelAgencyUuObject = {
         name: dtoIn.name,
-        state: TravelAgency.States.ACTIVE,
+        state: dtoIn.state || TravelAgency.States.ACTIVE,
         awid,
       };
 
       try {
         // 5.1
-        await this.dao.create(travelAgencyUuObject);
+        travelAgency = await this.dao.create(travelAgencyUuObject);
       } catch (error) {
         throw new Errors.Init.TravelAgencyDaoCreateFailed({ uuAppErrorMap }, { cause: e });
       }
     }
 
-    // TODO: find out whether It has to be or not
     if (dtoIn.uuAppProfileAuthorities) {
       try {
         await Profile.set(awid, "Authorities", dtoIn.uuAppProfileAuthorities);

@@ -1,6 +1,5 @@
 const Constants = {
   Schemas: {
-    PARTICIPANT: "participant",
     TRIP: "trip",
     TRAVEL_AGENCY: "travelAgency",
     LOCATION: "location",

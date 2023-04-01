@@ -16,15 +16,11 @@
     "useCaseMap": {
       "sys/uuAppWorkspace/init": {
         "sysStateList": ["created", "assigned"],
-        "profileList": ["AwidLicenseOwner"]
+        "profileList": ["AwidLicenseOwner", "AwidInitiator"]
       },
       "sys/uuAppWorkspace/load": {
         "sysStateList": ["active"],
         "profileList": ["Authorities", "LocationExecutives", "Readers", "TripExecutives"]
-      },
-      "sys/uuAppWorkspace/loadBasicData": {
-        "sysStateList": ["active"],
-        "profileList": ["Public"]
       },
       "defaultUve": {
         "profileList": ["Public"]

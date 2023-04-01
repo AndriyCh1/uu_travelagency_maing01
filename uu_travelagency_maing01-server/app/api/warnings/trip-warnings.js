@@ -9,25 +9,25 @@ const Warnings = {
   },
   Get: {
     UnsupportedKeys: {
-      code: `${Errors.Create.UC_CODE}unsupportedKeys`,
+      code: `${Errors.Get.UC_CODE}unsupportedKeys`,
       message: "DtoIn contains unsupported keys.",
     },
   },
   List: {
     UnsupportedKeys: {
-      code: `${Errors.Create.UC_CODE}unsupportedKeys`,
+      code: `${Errors.List.UC_CODE}unsupportedKeys`,
       message: "DtoIn contains unsupported keys.",
     },
   },
   Update: {
     UnsupportedKeys: {
-      code: `${Errors.Create.UC_CODE}unsupportedKeys`,
+      code: `${Errors.Update.UC_CODE}unsupportedKeys`,
       message: "DtoIn contains unsupported keys.",
     },
   },
   Delete: {
     UnsupportedKeys: {
-      code: `${Errors.Create.UC_CODE}unsupportedKeys`,
+      code: `${Errors.Delete.UC_CODE}unsupportedKeys`,
       message: "DtoIn contains unsupported keys.",
     },
   },

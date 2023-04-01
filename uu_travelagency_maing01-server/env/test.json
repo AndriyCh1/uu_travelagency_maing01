@@ -19,7 +19,8 @@
     "AwidLicenseOwner": {
       "accessCode1": "3yMhD1qzi0JUwsAJ7UOsWX2YtrGH_Olk5DxgWyssNW6e_WC4wjKrXODHES92cQXp",
       "accessCode2": "Cq%iaz#9w-#z7C8yZlZoC$DsebIK2JGWyDK8lg8J7vLFSKXtYFt5tn3eI3WthZtI",
-      "uuIdentity": "14-2710-1"
+      "uuIdentity": "14-2710-1",
+      "profileList": ["AwidLicenseOwner"]
     },
     "Authorities": {
       "accessCode1": "3yMhD1qzi0JUwsAJ7UOsWX2YtrGH_Olk5DxgWyssNW6e_WC4wjKrXODHES92cQXp",
@@ -27,17 +28,23 @@
       "uuIdentity": "14-2710-1",
       "profileList": ["Authorities"]
     },
-    "Executives": {
+    "LocationExecutives": {
       "accessCode1": "3yMhD1qzi0JUwsAJ7UOsWX2YtrGH_Olk5DxgWyssNW6e_WC4wjKrXODHES92cQXp",
       "accessCode2": "Cq%iaz#9w-#z7C8yZlZoC$DsebIK2JGWyDK8lg8J7vLFSKXtYFt5tn3eI3WthZtI",
       "uuIdentity": "14-2710-1",
-      "profileList": ["Authorities"]
+      "profileList": ["LocationExecutives"]
+    },
+    "TripExecutives": {
+      "accessCode1": "3yMhD1qzi0JUwsAJ7UOsWX2YtrGH_Olk5DxgWyssNW6e_WC4wjKrXODHES92cQXp",
+      "accessCode2": "Cq%iaz#9w-#z7C8yZlZoC$DsebIK2JGWyDK8lg8J7vLFSKXtYFt5tn3eI3WthZtI",
+      "uuIdentity": "14-2710-1",
+      "profileList": ["TripExecutives"]
     },
     "Readers": {
-      "accessCode1": "3yMhD1qzi0JUwsAJ7UOsWX2YtrGH_Olk5DxgWyssNW6e_WC4wjKrXODHES92cQXp",
-      "accessCode2": "Cq%iaz#9w-#z7C8yZlZoC$DsebIK2JGWyDK8lg8J7vLFSKXtYFt5tn3eI3WthZtI",
-      "uuIdentity": "14-2710-1",
-      "profileList": ["Authorities"]
+      "accessCode1": "UafUaf",
+      "accessCode2": "tester4321",
+      "uuIdentity": "19-7019-1",
+      "profileList": ["Readers"]
     }
   },
   "log_level": "FATAL",

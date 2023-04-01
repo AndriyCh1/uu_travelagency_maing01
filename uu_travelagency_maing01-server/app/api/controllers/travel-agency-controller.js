@@ -10,10 +10,6 @@ class TravelAgencyController {
   load(ucEnv) {
     return LoadAbl.load(ucEnv.getUri(), ucEnv.getSession());
   }
-
-  loadBasicData(ucEnv) {
-    return LoadAbl.loadBasicData(ucEnv.getUri(), ucEnv.getSession());
-  }
 }
 
 module.exports = new TravelAgencyController();

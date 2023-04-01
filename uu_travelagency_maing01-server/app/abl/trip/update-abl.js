@@ -69,7 +69,7 @@ class UpdateAbl {
     }
 
     // HDS 5
-    let toUpdate = { id: dtoIn.id };
+    let toUpdate = { id: dtoIn.id, text: dtoIn.text };
     if (dtoIn.name) {
       toUpdate.name = dtoIn.name;
     }

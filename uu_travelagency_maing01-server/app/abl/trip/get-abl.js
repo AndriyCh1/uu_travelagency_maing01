@@ -45,13 +45,12 @@ class GetAbl {
       awid,
       allowedStateRules,
       authorizationResult,
-      Errors.List,
+      Errors.Get,
       uuAppErrorMap
     );
 
     // HDS 3
     const trip = await this.dao.get(awid, dtoIn.id);
-
     if (!trip) {
       // 3.1
       throw new Errors.Get.TripDoesNotExist(uuAppErrorMap, { tripId: dtoIn.id });

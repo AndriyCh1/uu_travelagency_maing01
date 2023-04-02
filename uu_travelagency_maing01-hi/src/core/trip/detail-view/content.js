@@ -73,16 +73,32 @@ const Css = {
       justifyContent: "space-between",
       alignItems: "center",
       fontSize: "1rem",
-    }),
-  actionButtons: () =>
-    Config.Css.css({
-      display: "flex",
+      flexWrap: "wrap",
       gap: "10px",
     }),
-  button: () =>
-    Config.Css.css({
-      fontSize: "1rem",
-    }),
+  actionButtons: (screenSize) => {
+    let styles;
+
+    switch (screenSize) {
+      case "m":
+      case "l":
+      case "xl":
+        styles = { justifyContent: "flex-end", width: "auto" };
+        break;
+      default:
+        styles = { justifyContent: "space-between", width: "100%" };
+    }
+
+    return Config.Css.css({
+      display: "flex",
+      gap: "10px",
+      ...styles,
+    });
+  },
+  button: (screenSize) => {
+    const width = screenSize === "s" ? "100px" : "auto";
+    return Config.Css.css({ fontSize: "1rem", width });
+  },
 };
 //@@viewOff:css
 
@@ -109,6 +125,7 @@ const Content = createVisualComponent({
     const { tripDataObject, locationDataObject, onUpdate, onDelete } = props;
     const lsi = useLsi(importLsi, [Content.uu5Tag]);
     const { data: systemData } = useSystemData();
+    const [screenSize, setScreenSize] = useScreenSize();
 
     useEffect(() => {
       if (
@@ -123,13 +140,9 @@ const Content = createVisualComponent({
       }
     }, [locationDataObject]);
 
-    const handleShowParticipants = () => {
-      console.log("----- handleShowParticipants");
-    };
+    const handleShowParticipants = () => {};
 
-    const handleSignUp = () => {
-      console.log("----- handleSignUp");
-    };
+    const handleSignUp = () => {};
 
     const handleUpdate = (event) => {
       event.stopPropagation();
@@ -160,33 +173,29 @@ const Content = createVisualComponent({
 
     return (
       <div {...attrs}>
-        {tripDataObject.data && (
-          <>
-            <Tabs
-              itemList={[
-                {
-                  label: lsi.details,
-                  icon: "mdi-information-outline",
-                  children: <Details trip={trip} location={location} lsi={lsi} />,
-                },
-                { label: lsi.participants, icon: "mdi-account-group", children: "Participants" },
-              ]}
-            />
-            <Box significance="distinct" className={Css.footer()}>
-              <div>
-                <Text>
-                  {trip.creatorName}, <DateTime dateFormat="short" timeFormat="none" value={trip.creationDate} />
-                </Text>
-              </div>
-              <div className={Css.actionButtons()}>
-                <Button onClick={handleSignUp} className={Css.button()} colorScheme="building">
-                  {lsi.signUp}
-                </Button>
-                {getActionButtons(actionPermissions, { handleUpdate, handleDelete })}
-              </div>
-            </Box>
-          </>
-        )}
+        <Tabs
+          itemList={[
+            {
+              label: lsi.details,
+              icon: "mdi-information-outline",
+              children: <Details trip={trip} location={location} lsi={lsi} />,
+            },
+            { label: lsi.participants, icon: "mdi-account-group", children: "Participants" },
+          ]}
+        />
+        <Box significance="distinct" className={Css.footer()}>
+          <div>
+            <Text>
+              {trip.creatorName}, <DateTime dateFormat="short" timeFormat="none" value={trip.creationDate} />
+            </Text>
+          </div>
+          <div className={Css.actionButtons(screenSize)}>
+            <Button onClick={handleSignUp} className={Css.button(screenSize)} colorScheme="building">
+              {lsi.signUp}
+            </Button>
+            {getActionButtons(actionPermissions, { handleUpdate, handleDelete })}
+          </div>
+        </Box>
       </div>
     );
     //@@viewOff:render
@@ -195,15 +204,17 @@ const Content = createVisualComponent({
 
 //@@viewOn:helpers
 function getActionButtons(actionPermissions, { handleUpdate, handleDelete }) {
+  const [screenSize, setScreenSize] = useScreenSize();
+
   return (
     <>
       {actionPermissions.trip.update && (
-        <Button onClick={handleUpdate} className={Css.button()} colorScheme="building">
+        <Button onClick={handleUpdate} className={Css.button(screenSize)} colorScheme="building">
           <Icon icon="uugds-edit-inline" />
         </Button>
       )}
       {actionPermissions.trip.delete && (
-        <Button onClick={handleDelete} className={Css.button()} colorScheme="building">
+        <Button onClick={handleDelete} className={Css.button(screenSize)} colorScheme="building">
           <Icon icon="uugds-delete" />
         </Button>
       )}
@@ -241,9 +252,16 @@ function Details({ trip, location, lsi }) {
           <Info label={lsi.date} icon="mdi-calendar-multiple">
             {trip.date}
           </Info>
-          <Info label={lsi.locationLink} icon="mdi-link-variant">
-            <Link href={location.link}>{location.link}</Link>
-          </Info>
+          <Text className={Css.text()}>
+            <Icon
+              icon="mdi-link-variant"
+              className={Config.Css.css({
+                marginRight: "10px",
+                fontSize: "1.3rem",
+              })}
+            />
+            <Link href={location.link}>{lsi.locationLink}</Link>
+          </Text>
         </div>
       </div>
     </>

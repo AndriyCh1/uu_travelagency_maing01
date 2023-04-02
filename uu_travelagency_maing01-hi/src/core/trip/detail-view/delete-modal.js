@@ -64,7 +64,7 @@ export const DeleteModal = createVisualComponent({
 
     //@@viewOn:render
     const trip = tripDataObject.data;
-    console.log(props, "----- props");
+
     return (
       <Form>
         <Modal header={lsi.header} open={shown} onClose={onClose} className={Css.modal()}>

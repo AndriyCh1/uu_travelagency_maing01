@@ -1,6 +1,7 @@
 //@@viewOn:imports
-import { createVisualComponent, PropTypes, Lsi, useLsi, Utils } from "uu5g05";
+import { createVisualComponent, PropTypes, useLsi, Utils } from "uu5g05";
 import { Modal } from "uu5g05-elements";
+import { UuDate } from "uu_i18ng01";
 import {
   Form,
   FormText,
@@ -65,24 +66,38 @@ export const UpdateModal = createVisualComponent({
       }
     }
 
-    function handleValidate(event) {
-      const { text } = event.data.value;
+    const handleValidateDate = async (e) => {
+      const minDate = new UuDate().format("en-US", { format: "YYYY-MM-DD" });
+      const value = e.data.value;
 
-      // TODO: finish implementing
-      if (!text) {
+      if (value < minDate) {
         return {
-          message: "lsi",
+          message: {
+            en: "The trip must start no earlier than today.",
+            cs: "Výlet musí začínat nejdříve dnes.",
+            uk: "Поїздка повинна починатися не раніше сьогодні.",
+          },
+          messageParams: [minDate],
         };
       }
-    }
+    };
+
+    const handleValidatePositiveNumber = async (e) => {
+      const value = e.data.value;
+
+      if (+value < 0) {
+        return {
+          message: { en: "The field must be positive.", cs: "Pole musí být kladné.", uk: "Поле має бути додатнім." },
+        };
+      }
+    };
     //@@viewOff:private
 
     //@@viewOn:render
     return (
-      <Form.Provider onSubmit={handleSubmit} onValidate={handleValidate}>
+      <Form.Provider onSubmit={handleSubmit}>
         <Modal
           header={lsi.header}
-          info={<Lsi lsi={lsi.info} />}
           open={props.shown}
           footer={
             <div className={Css.footer()}>
@@ -98,6 +113,7 @@ export const UpdateModal = createVisualComponent({
               inputAttrs={{ maxLength: 255 }}
               className={Css.input()}
               initialValue={trip.name}
+              required
             />
             <FormSelect
               label={lsi.location}
@@ -105,13 +121,15 @@ export const UpdateModal = createVisualComponent({
               initialValue={trip.locationId}
               itemList={mapLocationToItemList(locationDataList)}
               className={Css.input()}
+              required
             />
             <FormNumber
               label={lsi.price}
               name="price"
-              inputAttrs={{ maxLength: 255 }}
               className={Css.input()}
               initialValue={trip.price}
+              onValidate={handleValidatePositiveNumber}
+              required
             />
             <FormDate
               label={lsi.date}
@@ -119,6 +137,8 @@ export const UpdateModal = createVisualComponent({
               className={Css.input()}
               pickerType="horizontal"
               initialValue={trip.date}
+              onValidate={handleValidateDate}
+              required
             />
             <FormTextArea
               label={lsi.text}
@@ -127,6 +147,7 @@ export const UpdateModal = createVisualComponent({
               className={Css.input()}
               rows={10}
               initialValue={trip.text}
+              required
             />
           </Form.View>
         </Modal>

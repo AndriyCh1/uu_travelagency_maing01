@@ -63,7 +63,7 @@
     "header": "Update trip",
     "name": "Name",
     "location": "Location",
-    "price": "Price",
+    "price": "Price (euros)",
     "freePlaces": "Free places",
     "date": "Date",
     "text": "Text",
@@ -86,13 +86,14 @@
     "freePlaces": "Free places",
     "location": "Location",
     "date": "Date",
-    "locationLink": "Website"
+    "locationLink": "Website link"
+
   },
   "UuTravelagency.Core.Trip.DetailView.UpdateModal": {
     "header": "Update trip",
     "name": "Name",
     "location": "Location",
-    "price": "Price",
+    "price": "Price (euros)",
     "freePlaces": "Free places",
     "date": "Date",
     "text": "Text",

@@ -30,6 +30,7 @@ export const ListProvider = createComponent({
         update: handleUpdate,
         delete: handleDelete,
       },
+      pageSize: 10,
     });
 
     const filterList = useRef([]);

@@ -1,6 +1,5 @@
 //@@viewOn:imports
 import { createVisualComponent, Utils, PropTypes } from "uu5g05";
-import { UuGds } from "uu5g05-elements";
 import { Grid } from "uu5tilesg02-elements";
 import { FilterBar, FilterManagerModal, SorterBar, SorterManagerModal } from "uu5tilesg02-controls";
 import Tile from "./tile";
@@ -8,9 +7,6 @@ import Config from "./config/config";
 //@@viewOff:imports
 
 //@@viewOn:css
-const Css = {
-  grid: () => Config.Css.css({}),
-};
 //@@viewOff:css
 
 export const Content = createVisualComponent({
@@ -38,9 +34,9 @@ export const Content = createVisualComponent({
     const { tripDataList, locationDataList, ...tileProps } = props;
     const pageSize = tripDataList.pageSize;
 
-    function handleLoadNext({ indexFrom }) {
-      props.onLoadNext({ pageSize: pageSize, pageIndex: Math.floor(indexFrom / pageSize) });
-    }
+    const handleLoadNext = ({ indexFrom, count }) => {
+      props.onLoadNext({ pageSize, pageIndex: Math.floor(indexFrom / pageSize) });
+    };
     //@@viewOff:private
 
     //@@viewOn:render
@@ -50,7 +46,7 @@ export const Content = createVisualComponent({
       <div {...attrs}>
         <FilterBar disabled={tripDataList.state !== "ready"} />
         <SorterBar disabled={tripDataList.state !== "ready"} />
-        <Grid onLoad={handleLoadNext} tileMinWidth={300} tileMaxWidth={500} tileMaxHeigh={400} className={Css.grid()}>
+        <Grid onLoad={handleLoadNext} tileMinWidth={300} tileMaxWidth={500} tileMaxHeigh={400}>
           {(tripDataObject) => (
             <Tile
               {...tileProps}

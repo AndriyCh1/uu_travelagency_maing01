@@ -197,7 +197,7 @@ export const Tile = createVisualComponent({
               <div className={Css.actionButtons()}>
                 <Button onClick={handleDetail}>
                   {lsi.seeMore}
-                  <Icon icon="mdi-chevron-right" className={Css.icon()} />
+                  <Icon icon="mdi-chevron-right" className={Css.icon()} colorScheme="building" />
                 </Button>
               </div>
             </div>

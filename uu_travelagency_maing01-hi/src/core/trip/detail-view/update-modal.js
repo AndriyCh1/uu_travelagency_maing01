@@ -1,6 +1,8 @@
 //@@viewOn:imports
 import { createVisualComponent, PropTypes, Lsi, useLsi, Utils } from "uu5g05";
 import { Modal } from "uu5g05-elements";
+import { UuDate } from "uu_i18ng01";
+
 import {
   Form,
   FormText,
@@ -81,16 +83,6 @@ export const UpdateModal = createVisualComponent({
       }
     };
 
-    const handleValidatePositiveNumber = async (e) => {
-      const value = e.data.value;
-
-      if (+value < 0) {
-        return {
-          message: { en: "The field must be positive.", cs: "Pole musí být kladné.", uk: "Поле має бути додатнім." },
-        };
-      }
-    };
-
     //@@viewOn:render
     return (
       <Form.Provider onSubmit={handleSubmit}>
@@ -126,7 +118,7 @@ export const UpdateModal = createVisualComponent({
               name="price"
               className={Css.input()}
               initialValue={trip.price}
-              onValidate={handleValidatePositiveNumber}
+              min={0}
               required
             />
             <FormDate

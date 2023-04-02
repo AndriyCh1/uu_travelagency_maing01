@@ -40,7 +40,12 @@
     "location": "Location",
     "dateFrom": "From",
     "dateTo": "To",
-    "createTrip": "Create Trip"
+    "createTrip": "Create Trip",
+    "createSuccess": "The trip was successfully created. Click here to see its details",
+    "createFail": "The trip was not created.",
+    "updateSuccess": "The trip was successfully updated.",
+    "successAlertHeader": "Successfully executed operation",
+    "failAlertHeader": "Failed to execute operation"
   },
   "UuTravelagency.Core.Trip.ListView.Tile": {
     "seeMore": "More details",

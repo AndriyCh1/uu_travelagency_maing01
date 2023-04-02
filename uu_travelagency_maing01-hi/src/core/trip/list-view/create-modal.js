@@ -81,15 +81,6 @@ export const CreateModal = createVisualComponent({
       }
     };
 
-    const handleValidatePositiveNumber = async (e) => {
-      const value = e.data.value;
-
-      if (+value < 0) {
-        return {
-          message: { en: "The field must be positive.", cs: "Pole musí být kladné.", uk: "Поле має бути додатнім." },
-        };
-      }
-    };
     //@@viewOff:private
 
     //@@viewOn:render
@@ -119,16 +110,10 @@ export const CreateModal = createVisualComponent({
               name="price"
               inputAttrs={{ maxLength: 255 }}
               className={Css.input()}
-              onValidate={handleValidatePositiveNumber}
+              min={0}
               required
             />
-            <FormNumber
-              label={lsi.freePlaces}
-              name="freePlaces"
-              className={Css.input()}
-              onValidate={handleValidatePositiveNumber}
-              required
-            />
+            <FormNumber label={lsi.freePlaces} name="freePlaces" className={Css.input()} min={0} max={10} required />
             <FormDate
               label={lsi.date}
               name="date"

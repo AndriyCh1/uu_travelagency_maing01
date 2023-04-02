@@ -51,10 +51,9 @@ export const UpdateModal = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, locationDataList, shown, onCancel, onSaveDone } = props;
-    const trip = tripDataObject.data;
-
+    const { tripDataObject, locationDataList, onCancel, onSaveDone } = props;
     const lsi = useLsi(importLsi, [UpdateModal.uu5Tag]);
+    const trip = tripDataObject.data;
 
     async function handleSubmit(event) {
       try {
@@ -75,19 +74,9 @@ export const UpdateModal = createVisualComponent({
           message: {
             en: "The trip must start no earlier than today.",
             cs: "Výlet musí začínat nejdříve dnes.",
-            uk: "Поїздка повинна починатися не раніше сьогодні.",
+            uk: "Поїздка повинна починатися не раніше ніж сьогодні.",
           },
           messageParams: [minDate],
-        };
-      }
-    };
-
-    const handleValidatePositiveNumber = async (e) => {
-      const value = e.data.value;
-
-      if (+value < 0) {
-        return {
-          message: { en: "The field must be positive.", cs: "Pole musí být kladné.", uk: "Поле має бути додатнім." },
         };
       }
     };
@@ -128,7 +117,7 @@ export const UpdateModal = createVisualComponent({
               name="price"
               className={Css.input()}
               initialValue={trip.price}
-              onValidate={handleValidatePositiveNumber}
+              min={0}
               required
             />
             <FormDate

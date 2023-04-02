@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createVisualComponent, useCallback, Utils, PropTypes, Lsi, useLsi, useRoute, useState } from "uu5g05";
-import Uu5Elements, { useAlertBus, Link } from "uu5g05-elements";
+import { Icon, Button, Link, Alert, AlertBus, Block } from "uu5g05-elements";
 import { ControllerProvider } from "uu5tilesg02";
 import { useSystemData } from "uu_plus4u5g02";
 import { FilterButton, SearchButton, SorterButton } from "uu5tilesg02-controls";
@@ -12,6 +12,25 @@ import CreateModal from "./list-view/create-modal";
 import UpdateModal from "./list-view/update-modal";
 import DeleteModal from "./list-view/delete-modal";
 //@@viewOff:imports
+
+//@@viewOn:css
+const Css = {
+  closeAlert: () =>
+    Config.Css.css({
+      borderRadius: "100%",
+      marginLeft: "10px",
+      padding: "0",
+    }),
+};
+//@@viewOff:css
+
+//@@viewOn:constants
+const AlertPriority = {
+  ERROR: "error",
+  INFO: "info",
+  SUCCESS: "success",
+};
+//@@viewOff:constants
 
 const ListView = createVisualComponent({
   //@@viewOn:statics
@@ -36,13 +55,14 @@ const ListView = createVisualComponent({
     const { tripDataList, locationDataList, filterList, sorterList } = props;
 
     const [, setRoute] = useRoute();
-    const { addAlert } = useAlertBus();
     const { data: systemData } = useSystemData();
     const lsi = useLsi(importLsi, [ListView.uu5Tag]);
 
     const [createData, setCreateData] = useState({ shown: false });
     const [updateData, setUpdateData] = useState({ shown: false, id: undefined });
     const [deleteData, setDeleteData] = useState({ shown: false, id: undefined });
+
+    const [alertData, setAlertData] = useState({ shown: false, priority: AlertPriority.INFO, message: "" });
 
     let activeDataObject;
     const activeDataObjectId = updateData.id || deleteData.id;
@@ -51,24 +71,15 @@ const ListView = createVisualComponent({
       activeDataObject = getTripObjectById(tripDataList, activeDataObjectId);
     }
 
-    const showError = useCallback(
-      (error) =>
-        addAlert({
-          message: error.message,
-          priority: "error",
-        }),
-      [addAlert]
-    );
-
     const handleLoad = useCallback(
       async (event) => {
         try {
           await tripDataList.handlerMap.load(event?.data);
         } catch (error) {
-          showError(error);
+          setAlertData({ shown: true, message: error, priority: AlertPriority.ERROR });
         }
       },
-      [tripDataList, showError]
+      [tripDataList]
     );
 
     const handleLoadNext = useCallback(
@@ -76,25 +87,26 @@ const ListView = createVisualComponent({
         try {
           await tripDataList.handlerMap.loadNext(pageInfo);
         } catch (error) {
-          showError(error);
+          setAlertData({ shown: true, message: error, priority: AlertPriority.ERROR });
         }
       },
-      [tripDataList, showError]
+      [tripDataList]
     );
 
-    function showCreateSuccess(trip) {
+    const showCreateSuccess = (trip) => {
       const message = (
-        <>
-          <Lsi import={importLsi} path={[ListView.uu5Tag, "createSuccessPrefix"]} />
-          <Link colorSchema="primary" onClick={() => handleDetail({ id: trip.id })}>
-            {trip.name}
-          </Link>
-          <Lsi import={importLsi} path={[ListView.uu5Tag, "createSuccessSuffix"]} />
-        </>
+        <Link colorSchema="primary" onClick={() => handleDetail({ id: trip.id })}>
+          {lsi.createSuccess}
+        </Link>
       );
 
-      addAlert({ message, priority: "success", durationMs: 5000 });
-    }
+      setAlertData({ shown: true, message, priority: AlertPriority.SUCCESS });
+    };
+
+    const handleCloseAlert = () => {
+      console.log("handleClsoeAlert ");
+      setAlertData({ shown: false });
+    };
 
     const handleDetail = (trip) => {
       setRoute("tripDetail", { id: trip.id });
@@ -109,10 +121,10 @@ const ListView = createVisualComponent({
       showCreateSuccess(trip);
 
       try {
-        props.tripDataList.handlerMap.reload();
+        tripDataList.handlerMap.reload();
       } catch (error) {
         ListView.logger.error("Error creating trip", error);
-        showError(error);
+        setAlertData({ shown: true, message: error, priority: AlertPriority.ERROR });
       }
     };
 
@@ -129,6 +141,7 @@ const ListView = createVisualComponent({
 
     const handleUpdateDone = () => {
       setUpdateData({ shown: false });
+      setAlertData({ shown: true, message: lsi.updateSuccess, priority: AlertPriority.SUCCESS });
     };
 
     const handleUpdateCancel = () => {
@@ -168,7 +181,7 @@ const ListView = createVisualComponent({
           onFilterChange={handleLoad}
           onSorterChange={handleLoad}
         >
-          <Uu5Elements.Block
+          <Block
             {...attrs}
             actionList={actionList}
             header={<Lsi import={importLsi} path={[ListView.uu5Tag, "header"]} />}
@@ -187,7 +200,7 @@ const ListView = createVisualComponent({
                 />
               </DataListStateResolver>
             </DataListStateResolver>
-          </Uu5Elements.Block>
+          </Block>
         </ControllerProvider>
         {createData.shown && (
           <CreateModal
@@ -214,6 +227,20 @@ const ListView = createVisualComponent({
             onCancel={handleDeleteCancel}
             onClose={handleDeleteCancel}
             shown
+          />
+        )}
+        {alertData.shown && alertData.priority === AlertPriority.SUCCESS && (
+          <Alert
+            header={getAlertHeader(lsi.successAlertHeader, handleCloseAlert)}
+            message={alertData.message}
+            priority={alertData.priority}
+          />
+        )}
+        {alertData.shown && alertData.priority === AlertPriority.ERROR && (
+          <Alert
+            header={getAlertHeader(lsi.failAlertHeader, handleCloseAlert)}
+            message={alertData.message}
+            priority={alertData.priority}
           />
         )}
       </>
@@ -262,14 +289,8 @@ function getFilters(locationDataList, lsi) {
 
 function getSorters(lsi) {
   const sorters = [
-    {
-      key: "date",
-      label: lsi.date,
-    },
-    {
-      key: "price",
-      label: lsi.price,
-    },
+    { key: "date", label: lsi.date },
+    { key: "price", label: lsi.price },
   ];
 
   return sorters;
@@ -297,13 +318,23 @@ function getActions(props, actionPermissions, { handleCreate }) {
   return actionList;
 }
 
-//@@viewOn:helpers
 function getTripObjectById(tripDataList, id) {
   const trip =
     tripDataList.newData?.find((trip) => trip?.data.id === id) ||
     tripDataList?.data.find((trip) => trip.data.id === id);
 
   return trip;
+}
+
+function getAlertHeader(text, handleClose) {
+  return (
+    <>
+      {text}
+      <Button className={Css.closeAlert()} onClick={handleClose}>
+        <Icon icon="mdi-close-circle" />
+      </Button>
+    </>
+  );
 }
 //@@viewOff:helpers
 

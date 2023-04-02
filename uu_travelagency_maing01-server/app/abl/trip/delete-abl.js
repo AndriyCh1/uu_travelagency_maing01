@@ -43,9 +43,6 @@ class DeleteAbl {
     );
 
     // HDS 3
-    // TODO: uuIdentity
-    // const uuIdentity = session.getIdentity().getUuIdentity();
-
     const userProfile = authorizationResult.getAuthorizedProfiles();
     const isAuthorities = userProfile.includes(Profiles.AUTHORITIES);
 
@@ -65,11 +62,11 @@ class DeleteAbl {
       throw new Errors.Delete.TripDoesNotExist({ uuAppErrorMap }, { tripId: dtoIn.id });
     }
 
-    // TODO: get rid of comments
     // HDS 5
-    // if (trip.state !== Trip.States.CLOSED) {
-    //   throw new Errors.Delete.DeletingUnavailable({ uuAppErrorMap });
-    // }
+    console.log(trip, "----- trip");
+    if (trip.state !== Trip.States.CLOSED) {
+      throw new Errors.Delete.DeletingUnavailable({ uuAppErrorMap });
+    }
 
     // HDS 6
     await this.dao.delete(awid, trip.id);

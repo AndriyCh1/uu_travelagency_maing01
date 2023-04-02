@@ -31,11 +31,7 @@ class GetAbl {
 
     // HDS 2
     const allowedStateRules = {
-      [Profiles.AUTHORITIES]: new Set([
-        TravelAgency.States.ACTIVE,
-        TravelAgency.States.UNDER_CONSTRUCTION,
-        TravelAgency.States.CLOSED,
-      ]),
+      [Profiles.AUTHORITIES]: new Set([TravelAgency.States.ACTIVE, TravelAgency.States.UNDER_CONSTRUCTION]),
       [Profiles.TRIP_EXECUTIVES]: new Set([TravelAgency.States.ACTIVE, TravelAgency.States.UNDER_CONSTRUCTION]),
       [Profiles.READERS]: new Set([TravelAgency.States.ACTIVE]),
       [Profiles.LOCATION_EXECUTIVES]: new Set([TravelAgency.States.ACTIVE]),

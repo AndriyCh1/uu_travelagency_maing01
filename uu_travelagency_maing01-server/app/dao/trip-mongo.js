@@ -14,28 +14,36 @@ class TripMongo extends UuObjectDao {
   }
 
   async get(awid, id, states) {
-    return await super.findOne({ id, awid, state: { $in: states } }, { state: 0, creationDate: 0 });
+    let filter = { id, awid };
+
+    if (states) {
+      filter.state = { $in: states };
+    }
+
+    return await super.findOne(filter);
   }
 
   async list(awid, sortBy, order, pageInfo, states) {
-    const filter = { awid, state: { $in: states } };
+    const filter = { awid };
+
+    if (states) {
+      filter.state = { $in: states };
+    }
 
     const sort = {
       [sortBy]: order === "asc" ? 1 : -1,
     };
 
-    const projection = {
-      uuIdentity: 0,
-      creatorName: 0,
-      creationDate: 0,
-      state: 0,
-    };
-
-    return await super.find(filter, pageInfo, sort, projection);
+    return await super.find(filter, pageInfo, sort);
   }
 
   async listByLocationIdAndDate(awid, sortBy, order, pageInfo, filterMap, states) {
-    let filter = { awid, state: { $in: states } };
+    const filter = { awid };
+
+    if (states) {
+      filter.state = { $in: states };
+    }
+
     let dateFilter = {};
 
     if (filterMap?.dateFrom) {
@@ -58,15 +66,7 @@ class TripMongo extends UuObjectDao {
       [sortBy]: order === "asc" ? 1 : -1,
     };
 
-    const projection = {
-      text: 0,
-      uuIdentity: 0,
-      creatorName: 0,
-      creationDate: 0,
-      state: 0,
-    };
-
-    return await super.find(filter, pageInfo, sort, projection);
+    return await super.find(filter, pageInfo, sort);
   }
 
   async update(uuObject) {

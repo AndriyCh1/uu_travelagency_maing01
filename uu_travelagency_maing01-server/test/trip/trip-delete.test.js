@@ -40,11 +40,12 @@ describe("Testing the trip/delete uuCmd...", () => {
     };
 
     const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
-
-    const dtoIn = {
+    await TestHelper.executePostCommand(Commands.TRIP_UPDATE_STATE, {
       id: tripCreateDtoOut.id,
-    };
+      state: "closed",
+    });
 
+    const dtoIn = { id: tripCreateDtoOut.id };
     const dtoOut = await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
 
     expect(dtoOut.status).toEqual(200);
@@ -79,6 +80,7 @@ describe("Testing the trip/delete uuCmd...", () => {
     };
 
     const createDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, createDtoIn);
+    await TestHelper.executePostCommand(Commands.TRIP_UPDATE_STATE, { id: createDtoOut.id, state: "closed" });
 
     const dtoIn = { id: createDtoOut.id, wrongKey: "This key is unsupported" };
     const dtoOut = await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
@@ -187,6 +189,7 @@ describe("Testing the trip/delete uuCmd...", () => {
     };
 
     const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
+    await TestHelper.executePostCommand(Commands.TRIP_UPDATE_STATE, { id: tripCreateDtoOut.id, state: "closed" });
 
     const dtoIn = { id: tripCreateDtoOut.id };
 
@@ -248,7 +251,7 @@ describe("Testing the trip/delete uuCmd...", () => {
     try {
       await TestHelper.executePostCommand(Commands.TRIP_DELETE, dtoIn);
     } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/delete/deletingUnavailiable");
+      expect(e.code).toEqual("uu-travel-agency/trip/delete/deletingUnavailable");
       expect(e.message).toEqual("The trip is not in closed state.");
     }
   });

@@ -22,6 +22,7 @@ const constants = {
     TRIP_LIST: "trip/list",
     TRIP_GET: "trip/get",
     TRIP_UPDATE: "trip/update",
+    TRIP_UPDATE_STATE: "trip/updateState",
     TRIP_DELETE: "trip/delete",
 
     LOCATION_CREATE: "location/create",

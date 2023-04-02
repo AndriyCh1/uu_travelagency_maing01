@@ -109,34 +109,6 @@ describe("Testing the trip/create uuCmd...", () => {
 
   test("Instance is not in correct state, closed", async () => {
     expect.assertions(3);
-    await TestHelper.teardown();
-    await TestHelper.setup();
-    await TestHelper.initUuSubAppInstance();
-    await TestHelper.createUuAppWorkspace();
-    await TestHelper.initUuAppWorkspace({ uuAppProfileAuthorities: "urn:uu:GGPLUS4U" });
-
-    await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
-
-    const locationDtoIn = {
-      name: "Hotel Best Front Maritim",
-      address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
-      country: "Spain",
-      phone: "+34 933 03 44 40",
-      link: "https://www.booking.com/hotel/es/front-maritim.uk.html",
-      image: getImageStream(),
-    };
-
-    const locationDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationDtoIn);
-
-    const dtoIn = {
-      name: "Incredible Spain",
-      date: getTomorrowDate(),
-      price: 500,
-      freePlaces: 10,
-      locationId: locationDtoOut.id,
-      text: "You will not forget this unblievable trip...",
-      wrongKey: "This key is unsupported",
-    };
 
     await TestHelper.teardown();
     await TestHelper.setup();
@@ -144,6 +116,16 @@ describe("Testing the trip/create uuCmd...", () => {
     await TestHelper.createUuAppWorkspace();
     await TestHelper.initUuAppWorkspace({ uuAppProfileAuthorities: ".", state: "closed" });
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
+
+    const dtoIn = {
+      name: "Incredible Spain",
+      date: getTomorrowDate(),
+      price: 500,
+      freePlaces: 10,
+      locationId: "111111111111111111111111",
+      text: "You will not forget this unblievable trip...",
+      wrongKey: "This key is unsupported",
+    };
 
     try {
       await TestHelper.executePostCommand(Commands.TRIP_CREATE, dtoIn);

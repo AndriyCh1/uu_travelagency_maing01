@@ -16,9 +16,6 @@ class LoadAbl {
   }
 
   async load(uri, session, uuAppErrorMap = {}) {
-    // TODO: get rid of this
-    // return await UuAppWorkspace.load(uri, session, uuAppErrorMap);
-
     // HDS 1
     const dtoOut = await UuAppWorkspace.load(uri, session, uuAppErrorMap);
 

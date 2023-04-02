@@ -46,7 +46,12 @@ describe("Testing the trip/get uuCmd...", () => {
     const dtoOut = await TestHelper.executeGetCommand(Commands.TRIP_GET, dtoIn);
 
     expect(dtoOut.status).toEqual(200);
-    expect(dtoOut).toEqual(tripCreateDtoOut);
+    expect(dtoOut.name).toEqual(tripCreateDtoOut.name);
+    expect(dtoOut.date).toEqual(tripCreateDtoOut.date);
+    expect(dtoOut.price).toEqual(tripCreateDtoOut.price);
+    expect(dtoOut.freePlaces).toEqual(tripCreateDtoOut.freePlaces);
+    expect(dtoOut.locationId).toEqual(tripCreateDtoOut.locationId);
+    expect(dtoOut.text).toEqual(tripCreateDtoOut.text);
     expect(dtoOut.uuAppErrorMap).toEqual({});
   });
 
@@ -112,42 +117,10 @@ describe("Testing the trip/get uuCmd...", () => {
     await TestHelper.setup();
     await TestHelper.initUuSubAppInstance();
     await TestHelper.createUuAppWorkspace();
-    await TestHelper.initUuAppWorkspace({ uuAppProfileAuthorities: "urn:uu:GGPLUS4U" });
-
-    await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
-
-    const locationCreateDtoIn = {
-      name: "Hotel Best Front Maritim",
-      address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
-      country: "Spain",
-      phone: "+34 933 03 44 40",
-      link: "https://www.booking.com/hotel/es/front-maritim.uk.html",
-      image: getImageStream(),
-    };
-
-    const locationCreateDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationCreateDtoIn);
-
-    await TestHelper.login(Profiles.TRIP_EXECUTIVES);
-
-    const tripCreateDtoIn = {
-      name: "Incredible Spain",
-      date: getTomorrowDate(),
-      price: 500,
-      freePlaces: 10,
-      locationId: locationCreateDtoOut.id,
-      text: "You will not forget this unblievable trip...",
-    };
-
-    const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
-
-    await TestHelper.teardown();
-    await TestHelper.setup();
-    await TestHelper.initUuSubAppInstance();
-    await TestHelper.createUuAppWorkspace();
     await TestHelper.initUuAppWorkspace({ uuAppProfileAuthorities: ".", state: "closed" });
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);
 
-    const dtoIn = { id: tripCreateDtoOut.id };
+    const dtoIn = { id: "111111111111111111111111" };
 
     try {
       await TestHelper.executeGetCommand(Commands.TRIP_GET, dtoIn);

@@ -37,3 +37,8 @@ const tripUpdateDtoInType = shape({
 const tripDeleteDtoInType = shape({
   id: id().isRequired(),
 });
+
+const tripUpdateStateDtoIn = shape({
+  id: id().isRequired(),
+  state: oneOf(["init", "active", "closed"]).isRequired(),
+});

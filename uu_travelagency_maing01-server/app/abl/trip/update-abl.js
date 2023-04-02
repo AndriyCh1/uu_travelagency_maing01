@@ -45,9 +45,6 @@ class UpdateAbl {
     );
 
     // HDS 3
-    // TODO: find out if it is necessary to check uuIdentity
-    // const uuIdentity = session.getIdentity().getUuIdentity();
-
     const userProfile = authorizationResult.getAuthorizedProfiles();
     const isAuthorities = userProfile.includes(Profiles.AUTHORITIES);
     const isTripExecutives = userProfile.includes(Profiles.TRIP_EXECUTIVES);
@@ -136,6 +133,70 @@ class UpdateAbl {
     }
 
     // HDS 9
+    const dtoOut = {
+      ...updatedTrip,
+      uuAppErrorMap,
+    };
+
+    return dtoOut;
+  }
+
+  async updateState(awid, dtoIn, session, authorizationResult) {
+    let uuAppErrorMap = {};
+
+    const validationResult = this.validator.validate("tripUpdateStateDtoIn", dtoIn);
+
+    uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      uuAppErrorMap,
+      Warnings.Update.UnsupportedKeys.code,
+      Errors.Update.InvalidDtoIn
+    );
+
+    const allowedStateRules = {
+      [Profiles.AUTHORITIES]: new Set([TravelAgency.States.ACTIVE, TravelAgency.States.UNDER_CONSTRUCTION]),
+    };
+
+    // 2.1, 2.2
+    await InstanceChecker.ensureInstanceAndState(
+      awid,
+      allowedStateRules,
+      authorizationResult,
+      Errors.Update,
+      uuAppErrorMap
+    );
+
+    const userProfile = authorizationResult.getAuthorizedProfiles();
+    const isAuthorities = userProfile.includes(Profiles.AUTHORITIES);
+
+    if (!isAuthorities) {
+      throw new Errors.Update.UserNotAuthorized(
+        { uuAppErrorMap },
+        { userProfile, expectedProfile: [Profiles.AUTHORITIES] }
+      );
+    }
+
+    const trip = await this.dao.get(awid, dtoIn.id);
+
+    if (!trip) {
+      throw new Errors.Update.TripDoesnotExist({ uuAppErrorMap }, { tripId: dtoIn.id });
+    }
+
+    let toUpdate = { ...dtoIn, awid };
+
+    let updatedTrip;
+
+    try {
+      updatedTrip = await this.dao.update(toUpdate);
+    } catch (e) {
+      if (e instanceof ObjectStoreError) {
+        throw new Errors.Update.TripDaoUpdateFailed({ uuAppErrorMap }, { cause: e });
+      }
+
+      throw e;
+    }
+
     const dtoOut = {
       ...updatedTrip,
       uuAppErrorMap,

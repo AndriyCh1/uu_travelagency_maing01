@@ -24,7 +24,7 @@ class InstanceChecker {
         {
           awid,
           state: travelAgency.state,
-          expectedState: Array.from(allowedStates),
+          expectedState: [...allowedStates],
         }
       );
     }

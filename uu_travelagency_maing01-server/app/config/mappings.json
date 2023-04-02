@@ -47,6 +47,14 @@
           "id": "$.id"
         }
       },
+      "trip/updateState": {
+        "realization": "api/controllers/TripController.updateState",
+        "httpMethod": "POST",
+        "type": "CMD",
+        "dtoInAuditMap": {
+          "id": "$.id"
+        }
+      },
       "trip/delete": {
         "realization": "api/controllers/TripController.delete",
         "httpMethod": "POST",

@@ -25,6 +25,15 @@ class TripController {
   delete(ucEnv) {
     return DeleteAbl.delete(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.session, ucEnv.getAuthorizationResult());
   }
+
+  updateState(ucEnv) {
+    return UpdateAbl.updateState(
+      ucEnv.getUri().getAwid(),
+      ucEnv.getDtoIn(),
+      ucEnv.session,
+      ucEnv.getAuthorizationResult()
+    );
+  }
 }
 
 module.exports = new TripController();

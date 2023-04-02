@@ -82,7 +82,7 @@ class ListAbl {
     if (!(dtoIn?.filterMap?.locationId || dtoIn?.filterMap?.dateFrom || dtoIn?.filterMap?.dateTo)) {
       list = await this.dao.list(awid, sortBy, order, pageInfo, allowedStates);
     } else {
-      list = await this.dao.listByLocationIdAndDate(awid, sortBy, order, pageInfo, dtoIn.filterMap);
+      list = await this.dao.listByLocationIdAndDate(awid, sortBy, order, pageInfo, dtoIn.filterMap, allowedStates);
     }
 
     // HDS 4

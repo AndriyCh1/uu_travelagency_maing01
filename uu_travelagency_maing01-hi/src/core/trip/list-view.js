@@ -250,9 +250,9 @@ const ListView = createVisualComponent({
 });
 
 //@@viewOn:helpers
-let filterList = [];
-
 function getFilters(locationDataList, lsi) {
+  let filterList = [];
+
   if (locationDataList.state === "ready") {
     const locationFilter = {
       key: "locationId",
@@ -302,7 +302,6 @@ function getActions(props, actionPermissions, { handleCreate }) {
   if (props.tripDataList.data) {
     actionList.push({ component: FilterButton });
     actionList.push({ component: SorterButton });
-    actionList.push({ component: SearchButton });
 
     if (actionPermissions.trip.create) {
       actionList.push({

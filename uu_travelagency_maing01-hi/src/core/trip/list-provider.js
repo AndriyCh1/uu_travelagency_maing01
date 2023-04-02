@@ -57,7 +57,6 @@ export const ListProvider = createComponent({
       const criteria = prepareLoadDtoIn(filterList.current, sorterList.current, pageInfo);
 
       const dtoIn = { ...criteria, pageInfo };
-      console.log(dtoIn, "----- handleLoadNext dtoIn");
       return Calls.Trip.list(dtoIn);
     }
 

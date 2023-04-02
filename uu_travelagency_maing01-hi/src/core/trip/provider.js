@@ -25,7 +25,7 @@ export const TripProvider = createComponent({
       handlerMap: {
         load: handleLoad,
         update: handleUpdate,
-        delete: Calls.Trip.delete,
+        delete: handleDelete,
       },
     });
 

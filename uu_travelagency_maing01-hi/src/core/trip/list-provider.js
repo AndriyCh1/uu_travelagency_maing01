@@ -50,7 +50,6 @@ export const ListProvider = createComponent({
       }
 
       const dtoIn = prepareLoadDtoIn(filterList.current, sorter, criteria?.pageInfo);
-
       return Calls.Trip.list(dtoIn);
     }
 
@@ -58,6 +57,7 @@ export const ListProvider = createComponent({
       const criteria = prepareLoadDtoIn(filterList.current, sorterList.current, pageInfo);
 
       const dtoIn = { ...criteria, pageInfo };
+      console.log(dtoIn, "----- handleLoadNext dtoIn");
       return Calls.Trip.list(dtoIn);
     }
 
@@ -99,7 +99,7 @@ function prepareLoadDtoIn(filterList, sorter, pageInfo) {
 
   if (sorter) {
     dtoIn.sortBy = sorter.key;
-    dtoIn.order = sorter.ascending ? "asc" : "desc";
+    dtoIn.order = sorter.ascending ? "desc" : "asc";
   }
 
   if (pageInfo) {

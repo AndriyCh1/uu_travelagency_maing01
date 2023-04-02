@@ -3,7 +3,7 @@ import { createVisualComponent, useCallback, Utils, PropTypes, Lsi, useLsi, useR
 import Uu5Elements, { useAlertBus, Link } from "uu5g05-elements";
 import { ControllerProvider } from "uu5tilesg02";
 import { useSystemData } from "uu_plus4u5g02";
-import { FilterButton, SorterButton } from "uu5tilesg02-controls";
+import { FilterButton, SearchButton, SorterButton } from "uu5tilesg02-controls";
 import DataListStateResolver from "../data-list-state-resolver";
 import Config from "./config/config";
 import importLsi from "../../lsi/import-lsi";
@@ -178,8 +178,8 @@ const ListView = createVisualComponent({
             <DataListStateResolver dataList={tripDataList}>
               <DataListStateResolver dataList={locationDataList}>
                 <Content
-                  tripDataList={props.tripDataList}
-                  locationDataList={props.locationDataList}
+                  tripDataList={tripDataList}
+                  locationDataList={locationDataList}
                   onLoadNext={handleLoadNext}
                   onDetail={handleDetail}
                   onUpdate={handleUpdate}
@@ -223,10 +223,9 @@ const ListView = createVisualComponent({
 });
 
 //@@viewOn:helpers
+let filterList = [];
 
 function getFilters(locationDataList, lsi) {
-  let filterList = [];
-
   if (locationDataList.state === "ready") {
     const locationFilter = {
       key: "locationId",
@@ -280,13 +279,9 @@ function getActions(props, actionPermissions, { handleCreate }) {
   const actionList = [];
 
   if (props.tripDataList.data) {
-    actionList.push({
-      component: FilterButton,
-    });
-
-    actionList.push({
-      component: SorterButton,
-    });
+    actionList.push({ component: FilterButton });
+    actionList.push({ component: SorterButton });
+    actionList.push({ component: SearchButton });
 
     if (actionPermissions.trip.create) {
       actionList.push({

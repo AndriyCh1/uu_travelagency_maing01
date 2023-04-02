@@ -1,12 +1,19 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, PropTypes } from "uu5g05";
+import { createVisualComponent, Utils, PropTypes, useState, useMemo } from "uu5g05";
 import { Grid } from "uu5tilesg02-elements";
+import { Pagination } from "uu5g05-elements";
 import { FilterBar, FilterManagerModal, SorterBar, SorterManagerModal } from "uu5tilesg02-controls";
 import Tile from "./tile";
 import Config from "./config/config";
 //@@viewOff:imports
 
 //@@viewOn:css
+const Css = {
+  pagination: () =>
+    Config.Css.css({
+      marginTop: "10px",
+    }),
+};
 //@@viewOff:css
 
 export const Content = createVisualComponent({
@@ -31,12 +38,20 @@ export const Content = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
-    const { tripDataList, locationDataList, ...tileProps } = props;
+    const { tripDataList, locationDataList, onLoadNext, ...tileProps } = props;
     const pageSize = tripDataList.pageSize;
+    const [shownPageIndex, setShownPageIndex] = useState(0);
+    const data = tripDataList.data;
+    const total = data ? data.length : 0;
 
-    const handleLoadNext = ({ indexFrom, count }) => {
-      props.onLoadNext({ pageSize, pageIndex: Math.floor(indexFrom / pageSize) });
+    const onPaginationChange = ({ index }) => {
+      onLoadNext({ pageIndex: index, pageSize });
+      setShownPageIndex(index);
     };
+
+    const dataToRender = useMemo(() => {
+      return data?.slice(shownPageIndex * pageSize, shownPageIndex * pageSize + pageSize);
+    }, [data]);
     //@@viewOff:private
 
     //@@viewOn:render
@@ -46,7 +61,7 @@ export const Content = createVisualComponent({
       <div {...attrs}>
         <FilterBar disabled={tripDataList.state !== "ready"} />
         <SorterBar disabled={tripDataList.state !== "ready"} />
-        <Grid onLoad={handleLoadNext} tileMinWidth={300} tileMaxWidth={500} tileMaxHeigh={400}>
+        <Grid tileMinWidth={300} tileMaxWidth={500} tileMaxHeigh={400} data={dataToRender}>
           {(tripDataObject) => (
             <Tile
               {...tileProps}
@@ -58,6 +73,15 @@ export const Content = createVisualComponent({
             />
           )}
         </Grid>
+        <Pagination
+          className={Css.pagination()}
+          index={shownPageIndex}
+          type="pages"
+          size="xl"
+          count={Math.ceil(total / pageSize)}
+          onChange={(e) => onPaginationChange({ index: e.data.index })}
+          disabled={!data || !tripDataList.handlerMap.loadNext}
+        />
         <FilterManagerModal />
         <SorterManagerModal />
       </div>

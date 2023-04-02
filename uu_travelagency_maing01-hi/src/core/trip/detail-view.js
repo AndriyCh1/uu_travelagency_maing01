@@ -63,11 +63,10 @@ const DetailView = createVisualComponent({
           <DataObjectStateResolver dataObject={tripDataObject}>
             <DataListStateResolver dataList={locationDataList}>
               {() => {
-                const locationDataObject = getLocationDataObjectById(locationDataList, tripDataObject.data.locationId);
                 return (
                   <Content
                     tripDataObject={tripDataObject}
-                    locationDataObject={locationDataObject}
+                    locationDataObject={getLocationDataObjectById(locationDataList, tripDataObject.data.locationId)}
                     onUpdate={handleUpdate}
                     onDelete={handleDelete}
                   />

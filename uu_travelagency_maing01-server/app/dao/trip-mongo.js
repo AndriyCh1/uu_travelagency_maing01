@@ -25,7 +25,6 @@ class TripMongo extends UuObjectDao {
     };
 
     const projection = {
-      text: 0,
       uuIdentity: 0,
       creatorName: 0,
       creationDate: 0,

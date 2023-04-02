@@ -65,7 +65,6 @@ export const CreateModal = createVisualComponent({
         throw new Utils.Error.Message(error.message, error);
       }
     }
-    //TODO: LSI for messages
     const handleValidateDate = async (e) => {
       const minDate = new UuDate().format("en-US", { format: "YYYY-MM-DD" });
       const value = e.data.value;

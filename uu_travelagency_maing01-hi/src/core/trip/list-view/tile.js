@@ -4,7 +4,6 @@ import Uu5Elements, { Text, Button, Pending, Icon, Box } from "uu5g05-elements";
 import Config from "./config/config";
 import ImagePlaceholder from "../../../assets/image-placeholder.jpg";
 import importLsi from "../../../lsi/import-lsi";
-
 //@@viewOff:imports
 
 //@@viewOn:css
@@ -116,9 +115,9 @@ export const Tile = createVisualComponent({
         locationDataObject.state === "ready" &&
         locationDataObject.handlerMap?.getImage
       ) {
-        locationDataObject.handlerMap
+        locationDataObject.data.image = locationDataObject.handlerMap
           .getImage(locationDataObject.data)
-          .catch((e) => Tile.logger.error("Error loading image", e));
+          .catch(() => console.log("Error loading image"));
       }
     }, [locationDataObject]);
 

@@ -5,7 +5,8 @@ const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../../api/errors/trip-error");
 const Warnings = require("../../api/warnings/trip-warnings");
 const InstanceChecker = require("../../component/instance-checker");
-const { Profiles, Schemas, TravelAgency } = require("../constants");
+const { Profiles, Schemas, TravelAgency, Trip } = require("../constants");
+const StatesDeterminer = require("../../component/states-determiner");
 
 class GetAbl {
   constructor() {
@@ -50,7 +51,18 @@ class GetAbl {
     );
 
     // HDS 3
-    const trip = await this.dao.get(awid, dtoIn.id);
+    const allowedProfilesStates = {
+      [Profiles.AUTHORITIES]: [Trip.States.INIT, Trip.States.ACTIVE, Trip.States.CLOSED],
+      [Profiles.TRIP_EXECUTIVES]: [Trip.States.INIT, Trip.States.ACTIVE, Trip.States.CLOSED],
+      [Profiles.READERS]: [TravelAgency.States.INIT, TravelAgency.States.ACTIVE],
+      [Profiles.LOCATION_EXECUTIVES]: [TravelAgency.States.INIT, TravelAgency.States.ACTIVE],
+    };
+
+    const uuIdentityProfileList = authorizationResult.getIdentityProfiles();
+
+    const allowedStates = StatesDeterminer.determine(allowedProfilesStates, uuIdentityProfileList);
+
+    const trip = await this.dao.get(awid, dtoIn.id, allowedStates);
     if (!trip) {
       // 3.1
       throw new Errors.Get.TripDoesNotExist(uuAppErrorMap, { tripId: dtoIn.id });

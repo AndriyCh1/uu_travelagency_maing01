@@ -3,7 +3,8 @@ const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const InstanceChecker = require("../../component/instance-checker");
-const { Profiles, Schemas, TravelAgency } = require("../constants");
+const StatesDeterminer = require("../../component/states-determiner");
+const { Profiles, Schemas, TravelAgency, Trip } = require("../constants");
 const Errors = require("../../api/errors/trip-error.js");
 const Warnings = require("../../api/warnings/trip-warnings.js");
 
@@ -67,8 +68,19 @@ class ListAbl {
     let list;
     const { sortBy, order, pageInfo } = dtoIn;
 
+    const allowedProfilesStates = {
+      [Profiles.AUTHORITIES]: [Trip.States.INIT, Trip.States.ACTIVE, Trip.States.CLOSED],
+      [Profiles.TRIP_EXECUTIVES]: [Trip.States.INIT, Trip.States.ACTIVE, Trip.States.CLOSED],
+      [Profiles.READERS]: [TravelAgency.States.INIT, TravelAgency.States.ACTIVE],
+      [Profiles.LOCATION_EXECUTIVES]: [TravelAgency.States.INIT, TravelAgency.States.ACTIVE],
+    };
+
+    const uuIdentityProfileList = authorizationResult.getIdentityProfiles();
+
+    const allowedStates = StatesDeterminer.determine(allowedProfilesStates, uuIdentityProfileList);
+
     if (!(dtoIn?.filterMap?.locationId || dtoIn?.filterMap?.dateFrom || dtoIn?.filterMap?.dateTo)) {
-      list = await this.dao.list(awid, sortBy, order, pageInfo);
+      list = await this.dao.list(awid, sortBy, order, pageInfo, allowedStates);
     } else {
       list = await this.dao.listByLocationIdAndDate(awid, sortBy, order, pageInfo, dtoIn.filterMap);
     }

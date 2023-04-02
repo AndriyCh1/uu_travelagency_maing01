@@ -13,12 +13,12 @@ class TripMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async get(awid, id) {
-    return await super.findOne({ id, awid }, { state: 0, creationDate: 0 });
+  async get(awid, id, states) {
+    return await super.findOne({ id, awid, state: { $in: states } }, { state: 0, creationDate: 0 });
   }
 
-  async list(awid, sortBy, order, pageInfo) {
-    const filter = { awid };
+  async list(awid, sortBy, order, pageInfo, states) {
+    const filter = { awid, state: { $in: states } };
 
     const sort = {
       [sortBy]: order === "asc" ? 1 : -1,
@@ -34,8 +34,8 @@ class TripMongo extends UuObjectDao {
     return await super.find(filter, pageInfo, sort, projection);
   }
 
-  async listByLocationIdAndDate(awid, sortBy, order, pageInfo, filterMap) {
-    let filter = { awid };
+  async listByLocationIdAndDate(awid, sortBy, order, pageInfo, filterMap, states) {
+    let filter = { awid, state: { $in: states } };
     let dateFilter = {};
 
     if (filterMap?.dateFrom) {

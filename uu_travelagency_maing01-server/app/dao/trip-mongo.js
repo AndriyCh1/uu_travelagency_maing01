@@ -14,7 +14,7 @@ class TripMongo extends UuObjectDao {
   }
 
   async get(awid, id) {
-    return await super.findOne({ id, awid });
+    return await super.findOne({ id, awid }, { state: 0, creationDate: 0 });
   }
 
   async list(awid, sortBy, order, pageInfo) {
@@ -24,7 +24,15 @@ class TripMongo extends UuObjectDao {
       [sortBy]: order === "asc" ? 1 : -1,
     };
 
-    return await super.find(filter, pageInfo, sort);
+    const projection = {
+      text: 0,
+      uuIdentity: 0,
+      creatorName: 0,
+      creationDate: 0,
+      state: 0,
+    };
+
+    return await super.find(filter, pageInfo, sort, projection);
   }
 
   async listByLocationIdAndDate(awid, sortBy, order, pageInfo, filterMap) {
@@ -51,7 +59,15 @@ class TripMongo extends UuObjectDao {
       [sortBy]: order === "asc" ? 1 : -1,
     };
 
-    return await super.find(filter, pageInfo, sort);
+    const projection = {
+      text: 0,
+      uuIdentity: 0,
+      creatorName: 0,
+      creationDate: 0,
+      state: 0,
+    };
+
+    return await super.find(filter, pageInfo, sort, projection);
   }
 
   async update(uuObject) {
@@ -60,6 +76,7 @@ class TripMongo extends UuObjectDao {
     }
 
     const filter = { id: uuObject.id, awid: uuObject.awid };
+
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }
 

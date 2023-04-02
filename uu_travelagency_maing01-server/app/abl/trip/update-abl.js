@@ -69,9 +69,14 @@ class UpdateAbl {
     }
 
     // HDS 5
-    let toUpdate = { id: dtoIn.id, text: dtoIn.text };
+    let toUpdate = { id: dtoIn.id };
+
     if (dtoIn.name) {
       toUpdate.name = dtoIn.name;
+    }
+
+    if (dtoIn.text) {
+      toUpdate.text = dtoIn.text;
     }
 
     const isInCorrectState = trip.state !== Trip.States.ACTIVE;

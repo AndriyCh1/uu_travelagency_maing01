@@ -40,13 +40,18 @@
     "location": "Místo",
     "dateFrom": "Od",
     "dateTo": "Do",
-    "createTrip": "Vytvořit výlet"
+    "createTrip": "Vytvořit výlet",
+    "createSuccess": "Výlet byl úspěšně vytvořen. Klikněte zde pro zobrazení detailů",
+    "createFail": "Výlet nebyl vytvořen.",
+    "updateSuccess": "Výlet byl úspěšně aktualizován.",
+    "successAlertHeader": "Operace proběhla úspěšně",
+    "failAlertHeader": "Operaci se nepodařilo provést"
   },
   "UuTravelagency.Core.Trip.ListView.Tile": {
     "seeMore": "Více informací",
-    "noImage": "Žádný obrázek",
-    "freePlaces": "Zbývá {0} místo (míst)",
-    "noFreePlaces": "Bohužel nejsou žádná volná místa"
+    "noImage": "Bez obrázku",
+    "freePlaces": "Zbývajících {0} míst",
+    "noFreePlaces": "Bohužel nejsou volná žádná místa"
   },
   "UuTravelagency.Core.Trip.ListView.CreateModal": {
     "header": "Vytvořit výlet",
@@ -60,32 +65,50 @@
     "cancel": "Zrušit"
   },
   "UuTravelagency.Core.Trip.ListView.UpdateModal": {
-    "header": "Upravit výlet",
+    "header": "Aktualizovat výlet",
     "name": "Název",
     "location": "Místo",
-    "price": "Cena",
+    "price": "Cena (eura)",
     "freePlaces": "Volná místa",
     "date": "Datum",
     "text": "Text",
-    "submit": "Upravit",
+    "submit": "Aktualizovat",
     "cancel": "Zrušit"
   },
   "UuTravelagency.Core.Trip.ListView.DeleteModal": {
     "cancel": "Ne",
-    "header": "Potvrzení smazání výletu",
+    "header": "Smazání výletu",
     "delete": "Ano",
     "submitting": "Opravdu chcete smazat výlet {0}?"
   },
   "UuTravelagency.Core.Trip.DetailView.Content": {
-    "details": "Podrobnosti",
+    "details": "Detaily",
     "participants": "Účastníci",
-    "noImage": "Žádný obrázek",
-    "signUp": "Přihlásit se na výlet",
+    "noImage": "Bez obrázku",
+    "signUp": "Přihlásit se",
     "tripName": "Název výletu",
     "price": "Cena",
     "freePlaces": "Volná místa",
     "location": "Místo",
     "date": "Datum",
-    "locationLink": "Webová stránka"
+    "locationLink": "Webová stránka",
+    "listOfParticipants": "Seznam účastníků"
+  },
+  "UuTravelagency.Core.Trip.DetailView.UpdateModal": {
+    "header": "Upravit cestu",
+    "name": "Název",
+    "location": "Místo",
+    "price": "Cena (eura)",
+    "freePlaces": "Volná místa",
+    "date": "Datum",
+    "text": "Popis",
+    "submit": "Aktualizovat",
+    "cancel": "Zrušit"
+  },
+  "UuTravelagency.Core.Trip.DetailView.DeleteModal": {
+    "cancel": "Ne",
+    "header": "Smazat cestu",
+    "delete": "Ano",
+    "submitting": "Opravdu chcete smazat cestu {0}?"
   }
 }

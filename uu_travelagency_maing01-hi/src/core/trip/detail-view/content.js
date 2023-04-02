@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createVisualComponent, Utils, PropTypes, useEffect, useScreenSize, useLsi, useCallback } from "uu5g05";
-import { Text, Icon, Link, Button, DateTime, Tabs, Box, Pending } from "uu5g05-elements";
+import { Text, Icon, Link, Button, DateTime, Tabs, Box, Pending, Block } from "uu5g05-elements";
 import Config from "./config/config";
 import ImagePlaceholder from "../../../assets/image-placeholder.jpg";
 import importLsi from "../../../lsi/import-lsi";
@@ -163,12 +163,13 @@ const Content = createVisualComponent({
     const profileList = systemData.profileData.uuIdentityProfileList;
     const isAuthority = profileList.includes("Authorities");
     const isTripExecutive = profileList.includes("TripExecutives");
+    const isReaders = profileList.includes("Readers ");
 
     const actionPermissions = {
-      trip: {
-        update: isAuthority || isTripExecutive,
-        delete: isAuthority || isTripExecutive,
-      },
+      update: isAuthority || isTripExecutive,
+      delete: isAuthority || isTripExecutive,
+      signUp: isAuthority || isReaders,
+      listOfParticipants: isAuthority || isTripExecutive,
     };
 
     return (
@@ -190,9 +191,16 @@ const Content = createVisualComponent({
             </Text>
           </div>
           <div className={Css.actionButtons(screenSize)}>
-            <Button onClick={handleSignUp} className={Css.button(screenSize)} colorScheme="building">
-              {lsi.signUp}
-            </Button>
+            {actionPermissions.signUp && (
+              <Button onClick={handleSignUp} className={Css.button(screenSize)} colorScheme="building">
+                {lsi.signUp}
+              </Button>
+            )}
+            {actionPermissions.listOfParticipants && (
+              <Button onClick={handleShowParticipants} className={Css.button(screenSize)} colorScheme="building">
+                {lsi.listOfParticipants}
+              </Button>
+            )}
             {getActionButtons(actionPermissions, { handleUpdate, handleDelete })}
           </div>
         </Box>
@@ -208,12 +216,12 @@ function getActionButtons(actionPermissions, { handleUpdate, handleDelete }) {
 
   return (
     <>
-      {actionPermissions.trip.update && (
+      {actionPermissions.update && (
         <Button onClick={handleUpdate} className={Css.button(screenSize)} colorScheme="building">
           <Icon icon="uugds-edit-inline" />
         </Button>
       )}
-      {actionPermissions.trip.delete && (
+      {actionPermissions.delete && (
         <Button onClick={handleDelete} className={Css.button(screenSize)} colorScheme="building">
           <Icon icon="uugds-delete" />
         </Button>
@@ -227,7 +235,7 @@ function Details({ trip, location, lsi }) {
   const [screenSize] = useScreenSize();
 
   return (
-    <>
+    <Block>
       <div className={Css.container(screenSize)}>
         <div className={Css.imageContainer(screenSize)}>
           {location.imageUrl && <img src={location.imageUrl} alt={location.name} className={Css.image()} />}
@@ -264,7 +272,7 @@ function Details({ trip, location, lsi }) {
           </Text>
         </div>
       </div>
-    </>
+    </Block>
   );
 }
 

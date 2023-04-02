@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import { createVisualComponent, useEffect, Utils, PropTypes, useLsi, useScreenSize } from "uu5g05";
-import Uu5Elements, { Text, Button, Pending, Icon, Box } from "uu5g05-elements";
+import Uu5Elements, { Text, Button, Pending, Icon, Block } from "uu5g05-elements";
 import Config from "./config/config";
 import ImagePlaceholder from "../../../assets/image-placeholder.jpg";
 import importLsi from "../../../lsi/import-lsi";
@@ -165,43 +165,41 @@ export const Tile = createVisualComponent({
         borderRadius="expressive"
         actionList={getActions()}
       >
-        {(tile) => (
-          <div className={Css.container(screenSize)}>
-            <div className={Css.imageContainer(screenSize)}>
-              {location.imageUrl && <img src={location.imageUrl} alt={location.name} className={Css.image()} />}
-              {location.image && !location.imageUrl && <Pending size="xl" />}
-              {!location.image && !location.imageUrl && (
-                <img src={ImagePlaceholder} alt={lsi.noImage} className={Css.image()} />
-              )}
+        <div className={Css.container(screenSize)}>
+          <div className={Css.imageContainer(screenSize)}>
+            {location.imageUrl && <img src={location.imageUrl} alt={location.name} className={Css.image()} />}
+            {location.image && !location.imageUrl && <Pending size="xl" />}
+            {!location.image && !location.imageUrl && (
+              <img src={ImagePlaceholder} alt={lsi.noImage} className={Css.image()} />
+            )}
+          </div>
+          <div className={Css.contentContainer()}>
+            <div className={Css.content()}>
+              <Text className={Css.text()}>
+                <Icon icon="mdi-map-marker" className={Css.icon()} />
+                {location.name}
+              </Text>
+              <Text className={Css.text()}>
+                <Icon icon="mdi-account-multiple" className={Css.icon()} />
+                {Utils.String.format(lsi.freePlaces, trip.freePlaces)}
+              </Text>
+              <Text className={Css.text()}>
+                <Icon icon="mdi-calendar-multiple" className={Css.icon()} />
+                {trip.date}
+              </Text>
+              <Text className={Css.text()}>
+                <Icon icon="mdi-cash" className={Css.icon()} />
+                {trip.price} €
+              </Text>
             </div>
-            <div className={Css.contentContainer()}>
-              <div className={Css.content()}>
-                <Text className={Css.text()}>
-                  <Icon icon="mdi-map-marker" className={Css.icon()} />
-                  {location.name}
-                </Text>
-                <Text className={Css.text()}>
-                  <Icon icon="mdi-account-multiple" className={Css.icon()} />
-                  {Utils.String.format(lsi.freePlaces, trip.freePlaces)}
-                </Text>
-                <Text className={Css.text()}>
-                  <Icon icon="mdi-calendar-multiple" className={Css.icon()} />
-                  {trip.date}
-                </Text>
-                <Text className={Css.text()}>
-                  <Icon icon="mdi-cash" className={Css.icon()} />
-                  {trip.price} €
-                </Text>
-              </div>
-              <div className={Css.actionButtons()}>
-                <Button onClick={handleDetail}>
-                  {lsi.seeMore}
-                  <Icon icon="mdi-chevron-right" className={Css.icon()} colorScheme="building" />
-                </Button>
-              </div>
+            <div className={Css.actionButtons()}>
+              <Button onClick={handleDetail}>
+                {lsi.seeMore}
+                <Icon icon="mdi-chevron-right" className={Css.icon()} colorScheme="building" />
+              </Button>
             </div>
           </div>
-        )}
+        </div>
       </Uu5Elements.Tile>
     );
     //@@viewOff:render

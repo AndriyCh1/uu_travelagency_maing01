@@ -1,13 +1,12 @@
 //@@viewOn:imports
 import { createVisualComponent, Utils, PropTypes, useCallback, useState, useRoute } from "uu5g05";
-import Uu5Elements from "uu5g05-elements";
+import { Block } from "uu5g05-elements";
 import DataObjectStateResolver from "../data-object-state-resolver";
 import DataListStateResolver from "../data-list-state-resolver";
 import Config from "./config/config";
 import Content from "./detail-view/content";
 import DeleteModal from "./detail-view/delete-modal";
 import UpdateModal from "./detail-view/update-modal";
-import { useSystemData } from "uu_plus4u5g02";
 //@@viewOff:imports
 
 const DetailView = createVisualComponent({
@@ -59,7 +58,7 @@ const DetailView = createVisualComponent({
 
     return (
       <>
-        <Uu5Elements.Block {...attrs} header={tripDataObject?.data?.name} headerType="heading" card="content">
+        <Block {...attrs} header={tripDataObject?.data?.name} headerType="heading" card="content">
           <DataObjectStateResolver dataObject={tripDataObject}>
             <DataListStateResolver dataList={locationDataList}>
               {() => {
@@ -74,7 +73,7 @@ const DetailView = createVisualComponent({
               }}
             </DataListStateResolver>
           </DataObjectStateResolver>
-        </Uu5Elements.Block>
+        </Block>
         {updateData.shown && (
           <UpdateModal
             tripDataObject={tripDataObject}

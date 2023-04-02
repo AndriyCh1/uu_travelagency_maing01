@@ -31,27 +31,32 @@
   },
   "Menu": {
     "trips": "Подорожі",
-    "about": "Про додаток"
+    "about": "Про програму"
   },
   "UuTravelagency.Core.Trip.ListView": {
     "header": "Подорожі",
     "date": "Дата",
     "price": "Ціна",
-    "location": "Місце",
-    "dateFrom": "З",
+    "location": "Місцезнаходження",
+    "dateFrom": "Від",
     "dateTo": "До",
-    "createTrip": "Створити подорож"
+    "createTrip": "Створити подорож",
+    "createSuccess": "Подорож успішно створена. Клацніть тут, щоб переглянути її деталі",
+    "createFail": "Подорож не була створена.",
+    "updateSuccess": "Подорож успішно оновлена.",
+    "successAlertHeader": "Операція виконана успішно",
+    "failAlertHeader": "Не вдалося виконати операцію"
   },
   "UuTravelagency.Core.Trip.ListView.Tile": {
-    "seeMore": "Детальніше",
+    "seeMore": "Більше деталей",
     "noImage": "Немає зображення",
-    "freePlaces": "Залишилося {0} місце(ь)",
+    "freePlaces": "{0} вільне місце (місця)",
     "noFreePlaces": "На жаль, немає вільних місць"
   },
   "UuTravelagency.Core.Trip.ListView.CreateModal": {
     "header": "Створити подорож",
     "name": "Назва",
-    "location": "Місце",
+    "location": "Місцезнаходження",
     "price": "Ціна",
     "freePlaces": "Вільні місця",
     "date": "Дата",
@@ -62,8 +67,8 @@
   "UuTravelagency.Core.Trip.ListView.UpdateModal": {
     "header": "Оновити подорож",
     "name": "Назва",
-    "location": "Місце",
-    "price": "Ціна",
+    "location": "Місцезнаходження",
+    "price": "Ціна (євро)",
     "freePlaces": "Вільні місця",
     "date": "Дата",
     "text": "Текст",
@@ -72,20 +77,38 @@
   },
   "UuTravelagency.Core.Trip.ListView.DeleteModal": {
     "cancel": "Ні",
-    "header": "Підтвердження видалення подорожі",
+    "header": "Видалення подорожі",
     "delete": "Так",
-    "submitting": "Ви дійсно бажаєте видалити подорож {0}?"
+    "submitting": "Ви дійсно хочете видалити подорож {0}?"
   },
   "UuTravelagency.Core.Trip.DetailView.Content": {
     "details": "Деталі",
     "participants": "Учасники",
     "noImage": "Немає зображення",
-    "signUp": "Зареєструватися на подорож",
-    "tripName": "Назва подорожі",
+    "signUp": "Зареєструйтесь",
+    "tripName": "Назва поїздки",
     "price": "Ціна",
     "freePlaces": "Вільні місця",
     "location": "Місце",
     "date": "Дата",
-    "locationLink": "Веб-сайт"
+    "locationLink": "Посилання на сайт",
+    "listOfParticipants": "Учасники"
+  },
+  "UuTravelagency.Core.Trip.DetailView.UpdateModal": {
+    "header": "Оновити поїздку",
+    "name": "Назва",
+    "location": "Місце",
+    "price": "Ціна (євро)",
+    "freePlaces": "Вільні місця",
+    "date": "Дата",
+    "text": "Текст",
+    "submit": "Оновити",
+    "cancel": "Скасувати"
+  },
+  "UuTravelagency.Core.Trip.DetailView.DeleteModal": {
+    "cancel": "Ні",
+    "header": "Видалення поїздки",
+    "delete": "Так",
+    "submitting": "Ви дійсно хочете видалити поїздку {0}?"
   }
 }

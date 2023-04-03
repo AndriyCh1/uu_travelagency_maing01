@@ -39,6 +39,7 @@ export const CreateModal = createVisualComponent({
     shown: PropTypes.bool,
     onSaveDone: PropTypes.func,
     onCancel: PropTypes.func,
+    onError: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -47,12 +48,13 @@ export const CreateModal = createVisualComponent({
     shown: false,
     onSaveDone: () => {},
     onCancel: () => {},
+    onError: () => {},
   },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:private
-    const { tripDataList, locationDataList } = props;
+    const { tripDataList, locationDataList, onError } = props;
 
     const lsi = useLsi(importLsi, [CreateModal.uu5Tag]);
 
@@ -61,8 +63,8 @@ export const CreateModal = createVisualComponent({
         const trip = await tripDataList.handlerMap.create(event.data.value);
         props.onSaveDone(trip);
       } catch (error) {
+        onError(error.message);
         CreateModal.logger.error("Error submitting form", error);
-        throw new Utils.Error.Message(error.message, error);
       }
     }
     const handleValidateDate = async (e) => {

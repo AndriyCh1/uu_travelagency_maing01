@@ -110,5 +110,9 @@
     "header": "Deleting trip submitting",
     "delete": "Yes",
     "submitting": "Do you really want to delete the trip \"{0}\"?"
+  },
+  "UuTravelagency.Core.Trip.DetailView": {
+    "successAlertHeader": "Successfully executed operation",
+    "failAlertHeader": "Failed to execute operation"
   }
 }

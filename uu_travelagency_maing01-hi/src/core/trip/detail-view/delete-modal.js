@@ -1,5 +1,5 @@
 //@@viewOn:imports
-import { createVisualComponent, PropTypes, useLsi, Utils } from "uu5g05";
+import { createVisualComponent, PropTypes, useLsi, useState, Utils } from "uu5g05";
 import { Modal, Button } from "uu5g05-elements";
 import { Form } from "uu5g05-forms";
 import Config from "./config/config";
@@ -35,6 +35,7 @@ export const DeleteModal = createVisualComponent({
     onCancel: PropTypes.func,
     onClose: PropTypes.func,
     onDeleteDone: PropTypes.func,
+    onError: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -43,21 +44,22 @@ export const DeleteModal = createVisualComponent({
     shown: false,
     onCancel: () => {},
     onDeleteDone: () => {},
+    onError: () => {},
   },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, shown, onDeleteDone, onCancel, onClose } = props;
+    const { tripDataObject, shown, onDeleteDone, onCancel, onClose, onError } = props;
     const lsi = useLsi(importLsi, [DeleteModal.uu5Tag]);
 
     async function handleDelete() {
       try {
-        await tripDataObject.handlerMap.delete({ id: tripDataObject.data.id });
+        await tripDataObject.handlerMap.delete(tripDataObject.data);
         onDeleteDone();
       } catch (error) {
+        onError(error.message);
         DeleteModal.logger.error("Error submitting form", error);
-        throw new Utils.Error.Message(error.message, error);
       }
     }
     //@@viewOff:private

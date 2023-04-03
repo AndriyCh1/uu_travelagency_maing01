@@ -1,13 +1,33 @@
 //@@viewOn:imports
-import { createVisualComponent, Utils, PropTypes, useCallback, useState, useRoute } from "uu5g05";
-import { Block } from "uu5g05-elements";
+import { createVisualComponent, Utils, PropTypes, useCallback, useState, useRoute, useLsi } from "uu5g05";
+import { Alert, Block, Button, Icon } from "uu5g05-elements";
 import DataObjectStateResolver from "../data-object-state-resolver";
 import DataListStateResolver from "../data-list-state-resolver";
 import Config from "./config/config";
 import Content from "./detail-view/content";
 import DeleteModal from "./detail-view/delete-modal";
 import UpdateModal from "./detail-view/update-modal";
+import importLsi from "../../lsi/import-lsi";
 //@@viewOff:imports
+
+//@@viewOn:css
+const Css = {
+  closeAlert: () =>
+    Config.Css.css({
+      borderRadius: "100%",
+      marginLeft: "10px",
+      padding: "0",
+    }),
+};
+//@@viewOff:css
+
+//@@viewOn:constants
+const AlertPriority = {
+  ERROR: "error",
+  INFO: "info",
+  SUCCESS: "success",
+};
+//@@viewOff:constants
 
 const DetailView = createVisualComponent({
   //@@viewOn:statics
@@ -27,10 +47,21 @@ const DetailView = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
+    const [, setRoute] = useRoute();
+    const lsi = useLsi(importLsi, [DetailView.uu5Tag]);
+
     const { tripDataObject, locationDataList } = props;
     const [updateData, setUpdateData] = useState({ shown: false });
     const [deleteData, setDeleteData] = useState({ shown: false });
-    const [, setRoute] = useRoute();
+    const [alertData, setAlertData] = useState({ shown: false, priority: AlertPriority.INFO, message: "" });
+
+    const handleError = (message) => {
+      setAlertData({ shown: true, message, priority: AlertPriority.ERROR });
+    };
+
+    const handleCloseAlert = () => {
+      setAlertData({ shown: false });
+    };
 
     const handleUpdate = useCallback(() => {
       setUpdateData({ shown: true });
@@ -89,7 +120,15 @@ const DetailView = createVisualComponent({
             onDeleteDone={handleDeleteDone}
             onCancel={handleDeleteCancel}
             onClose={handleDeleteCancel}
+            onError={handleError}
             shown
+          />
+        )}
+        {alertData.shown && alertData.priority === AlertPriority.ERROR && (
+          <Alert
+            header={getAlertHeader(lsi.failAlertHeader, handleCloseAlert)}
+            message={alertData.message}
+            priority={alertData.priority}
           />
         )}
       </>
@@ -102,6 +141,18 @@ const DetailView = createVisualComponent({
 function getLocationDataObjectById(locationDataList, id) {
   return locationDataList.data.find((location) => location.data.id === id);
 }
+
+function getAlertHeader(text, handleClose) {
+  return (
+    <>
+      {text}
+      <Button className={Css.closeAlert()} onClick={handleClose}>
+        <Icon icon="mdi-close-circle" />
+      </Button>
+    </>
+  );
+}
+
 //@@viewOff:helpers
 
 //@@viewOn:exports

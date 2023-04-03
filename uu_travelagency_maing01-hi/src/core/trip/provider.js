@@ -38,7 +38,7 @@ export const TripProvider = createComponent({
     }
 
     function handleDelete(trip) {
-      Calls.Trip.delete({ id: trip.id });
+      return Calls.Trip.delete({ id: trip.id });
     }
 
     //@@viewOff:private

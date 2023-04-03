@@ -1,9 +1,9 @@
 //@@viewOn:imports
 import { createVisualComponent, useCallback, Utils, PropTypes, Lsi, useLsi, useRoute, useState } from "uu5g05";
-import { Icon, Button, Link, Alert, AlertBus, Block } from "uu5g05-elements";
+import { Icon, Button, Link, Alert, Block } from "uu5g05-elements";
 import { ControllerProvider } from "uu5tilesg02";
 import { useSystemData } from "uu_plus4u5g02";
-import { FilterButton, SearchButton, SorterButton } from "uu5tilesg02-controls";
+import { FilterButton, SorterButton } from "uu5tilesg02-controls";
 import DataListStateResolver from "../data-list-state-resolver";
 import Config from "./config/config";
 import importLsi from "../../lsi/import-lsi";
@@ -103,8 +103,11 @@ const ListView = createVisualComponent({
       setAlertData({ shown: true, message, priority: AlertPriority.SUCCESS });
     };
 
+    const handleError = (message) => {
+      setAlertData({ shown: true, message, priority: AlertPriority.ERROR });
+    };
+
     const handleCloseAlert = () => {
-      console.log("handleClsoeAlert ");
       setAlertData({ shown: false });
     };
 
@@ -206,9 +209,10 @@ const ListView = createVisualComponent({
           <CreateModal
             tripDataList={props.tripDataList}
             locationDataList={props.locationDataList}
-            shown={true}
             onSaveDone={handleCreateDone}
             onCancel={handleCreateCancel}
+            onError={handleError}
+            shown
           />
         )}
         {updateData.shown && (
@@ -217,6 +221,7 @@ const ListView = createVisualComponent({
             locationDataList={locationDataList}
             onSaveDone={handleUpdateDone}
             onCancel={handleUpdateCancel}
+            onError={handleError}
             shown
           />
         )}
@@ -226,6 +231,7 @@ const ListView = createVisualComponent({
             onDeleteDone={handleDeleteDone}
             onCancel={handleDeleteCancel}
             onClose={handleDeleteCancel}
+            onError={handleError}
             shown
           />
         )}
@@ -320,7 +326,7 @@ function getActions(props, actionPermissions, { handleCreate }) {
 function getTripObjectById(tripDataList, id) {
   const trip =
     tripDataList.newData?.find((trip) => trip?.data.id === id) ||
-    tripDataList?.data.find((trip) => trip.data.id === id);
+    tripDataList?.data?.find((trip) => trip?.data.id === id);
 
   return trip;
 }

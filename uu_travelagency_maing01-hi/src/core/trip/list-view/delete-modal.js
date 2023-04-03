@@ -35,6 +35,7 @@ export const DeleteModal = createVisualComponent({
     onCancel: PropTypes.func,
     onClose: PropTypes.func,
     onDeleteDone: PropTypes.func,
+    onError: PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -43,12 +44,13 @@ export const DeleteModal = createVisualComponent({
     shown: false,
     onCancel: () => {},
     onDeleteDone: () => {},
+    onError: () => {},
   },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:private
-    const { tripDataObject, shown, onDeleteDone, onCancel, onClose } = props;
+    const { tripDataObject, shown, onDeleteDone, onCancel, onClose, onError } = props;
     const lsi = useLsi(importLsi, [DeleteModal.uu5Tag]);
 
     async function handleDelete() {
@@ -56,8 +58,8 @@ export const DeleteModal = createVisualComponent({
         await tripDataObject.handlerMap.delete();
         onDeleteDone();
       } catch (error) {
+        onError(error.message);
         DeleteModal.logger.error("Error submitting form", error);
-        throw new Utils.Error.Message(error.message, error);
       }
     }
     //@@viewOff:private

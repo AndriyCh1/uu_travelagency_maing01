@@ -5,7 +5,8 @@
       "realization": "MongoDB",
       "schemaMap": {
         "travelAgency": {
-          "realization": "dao/TravelAgencyMongo"
+          "realization": "dao/TravelAgencyMongo",
+          "maxNoi": 1
         },
         "trip": {
           "realization": "dao/TripMongo",

@@ -65,28 +65,15 @@ class UpdateAbl {
       throw new Errors.Update.TripDoesnotExist({ uuAppErrorMap }, { tripId: dtoIn.id });
     }
 
+    let toUpdate = { ...dtoIn };
+
     // HDS 5
-    let toUpdate = { id: dtoIn.id };
-
-    if (dtoIn.name) {
-      toUpdate.name = dtoIn.name;
-    }
-
-    if (dtoIn.text) {
-      toUpdate.text = dtoIn.text;
-    }
-
     const isInCorrectState = trip.state !== Trip.States.ACTIVE;
     const hasRequiredFields = dtoIn.locationId || dtoIn.price || dtoIn.date;
     const hasParticipants = trip.participantIdList?.length;
 
-    if (hasRequiredFields) {
-      if (!isInCorrectState && hasRequiredFields && hasParticipants) {
-        throw new Errors.Update.UpdatingUnavailable(uuAppErrorMap);
-      }
-
-      toUpdate.price = dtoIn.price;
-      toUpdate.date = dtoIn.date;
+    if (!isInCorrectState && hasRequiredFields && hasParticipants) {
+      throw new Errors.Update.UpdatingUnavailable(uuAppErrorMap);
     }
 
     // HDS 6
@@ -94,15 +81,13 @@ class UpdateAbl {
       // 6.1
       const locationStateCheck = await this.locationDao.getById(awid, dtoIn.locationId);
 
+      // 6.2
       if (!locationStateCheck) {
-        // 6.2
         throw new Errors.Update.LocationDoesNotExist({ uuAppErrorMap });
-      } else {
-        toUpdate.locationId = dtoIn.locationId;
       }
 
+      // 6.3
       if (locationStateCheck.state === Location.States.PROBLEM || locationStateCheck.state === Location.States.CLOSED) {
-        // 6.3
         throw new Errors.Update.LocationIsUnavailable({ uuAppErrorMap });
       }
     }

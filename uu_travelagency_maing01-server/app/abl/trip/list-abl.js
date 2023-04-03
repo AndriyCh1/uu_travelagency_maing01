@@ -80,8 +80,10 @@ class ListAbl {
     const allowedStates = StatesDeterminer.determine(allowedProfilesStates, uuIdentityProfileList);
 
     if (!(dtoIn?.filterMap?.locationId || dtoIn?.filterMap?.dateFrom || dtoIn?.filterMap?.dateTo)) {
+      // 3.A
       list = await this.dao.list(awid, sortBy, order, pageInfo, allowedStates);
     } else {
+      // 3.B
       list = await this.dao.listByLocationIdAndDate(awid, sortBy, order, pageInfo, dtoIn.filterMap, allowedStates);
     }
 

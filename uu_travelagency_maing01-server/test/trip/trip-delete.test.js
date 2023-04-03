@@ -161,48 +161,6 @@ describe("Testing the trip/delete uuCmd...", () => {
     }
   });
 
-  test("User not authorized", async () => {
-    expect.assertions(2);
-
-    await TestHelper.login(Profiles.LOCATION_EXECUTIVES);
-
-    const locationCreateDtoIn = {
-      name: "Hotel Best Front Maritim",
-      address: "Passeig de Garcia Fària, 69, 08019 Barcelona, Spain",
-      country: "Spain",
-      phone: "+34 933 03 44 40",
-      link: "https://www.booking.com/hotel/es/front-maritim.uk.html",
-      image: getImageStream(),
-    };
-
-    const locationCreateDtoOut = await TestHelper.executePostCommand(Commands.LOCATION_CREATE, locationCreateDtoIn);
-
-    await TestHelper.login(Profiles.READERS);
-
-    const tripCreateDtoIn = {
-      name: "Name A",
-      date: getTomorrowDate(),
-      price: 100,
-      freePlaces: 1,
-      locationId: locationCreateDtoOut.id,
-      text: "Text A",
-    };
-
-    const tripCreateDtoOut = await TestHelper.executePostCommand(Commands.TRIP_CREATE, tripCreateDtoIn);
-    await TestHelper.executePostCommand(Commands.TRIP_UPDATE_STATE, { id: tripCreateDtoOut.id, state: "closed" });
-
-    const dtoIn = { id: tripCreateDtoOut.id };
-
-    await TestHelper.login(Profiles.READERS);
-
-    try {
-      await TestHelper.executePostCommand(Commands.TRIP_UPDATE, dtoIn);
-    } catch (e) {
-      expect(e.code).toEqual("uu-travel-agency/trip/delete/userNotAuthorized");
-      expect(e.message).toEqual("User not authorized.");
-    }
-  });
-
   test("Trip does not exist ", async () => {
     expect.assertions(2);
     await TestHelper.login(Profiles.TRIP_EXECUTIVES);

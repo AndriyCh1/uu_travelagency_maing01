@@ -63,7 +63,6 @@ class DeleteAbl {
     }
 
     // HDS 5
-    console.log(trip, "----- trip");
     if (trip.state !== Trip.States.CLOSED) {
       throw new Errors.Delete.DeletingUnavailable({ uuAppErrorMap });
     }
